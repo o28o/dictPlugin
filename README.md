@@ -14,13 +14,15 @@ Iframe-based simple Pali Lookup Dictionary for any site.
 
 To make Pali text clickable:
 
-1. The Pali text should be enclosed in `<span class="pli-lang">Pali text</span>`.
+
+1.  Clone repo 
+2.  The Pali text should be enclosed in `<span class="pli-lang">Pali text</span>`.
    
-2. Styles should be applied in the `<head>` section:
+3. Styles should be applied in the `<head>` section:
    ```html
    <link rel="stylesheet" href="assets/css/paliLookup.css">
 
-3. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section:
+4. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section:
    ```html
    <script src="assets/js/paliLookup.js"></script>
 
