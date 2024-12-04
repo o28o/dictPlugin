@@ -22,5 +22,5 @@ To make Pali text clickable:
 
 3. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section:
    ```html
-<script src="assets/js/paliLookup.js"></script>
+   <script src="assets/js/paliLookup.js"></script>
 
