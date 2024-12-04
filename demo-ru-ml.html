@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Демо словаря на Пали </title>
+
+<!-- включите в ваш проект -->
+  <link rel="stylesheet" href="assets/css/paliLookup.css">
+  
+<!-- не включайте в ваш проект -->  
+  <link rel="stylesheet" href="assets/css/demo.css">
+
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: right;">
+        <a href="./">en</a> ru
+    </div>
+      <br><br>
+ <h1>Демо popup-словаря Пали</h1> 
+      
+<!-- включите в ваш проект Кнопка -->
+    <button class="toggle-dict-btn">
+      <img src="assets/svg/comment-slash.svg" class="common-size-icon4" alt="Переключить словарь">
+      Переключить словарь
+    </button> Вкл/выкл всплывающее окно с <a href=https://dpdict.net>DPD</a> iframe.      
+<!-- включите в ваш проект Кнопка конец -->
+
+
+<!-- НЕ забудьте обернуть пали текст в <span class="pli-lang">ПАЛИ ТЕКСТ</span>-->
+    <div>
+      <span class="pli-lang">Idaṁ kho pana, bhikkhave, dukkhaṁ ariyasaccaṁ—</span><br>
+      <span class="eng-lang">Здесь будет Ваш любимый перевод. Кликните по тексту Пали, чтобы открыть DPD iframe.</span><br><br>
+      <span class="pli-lang">jātipi dukkhā, jarāpi dukkhā, byādhipi dukkho, maraṇampi dukkhaṁ, appiyehi sampayogo dukkho, piyehi vippayogo dukkho, yampicchaṁ na labhati tampi dukkhaṁ—saṅkhittena pañcupādānakkhandhā dukkhā.</span><br>
+<span class="eng-lang">Чтобы Пали текст был кликабельным:<br>
+
+1. он должен быть заключен в &lt;span class="pli-lang"&gt;Пали текст&lt;/span&gt;
+<br>
+<br>
+2. стили должны быть подключены в разделе Head: &lt;link rel="stylesheet" href="assets/css/paliLookup.css"&gt;
+<br><br>
+3. javascript должен быть подключен после текста пали, например, в конце раздела Body:
+ &lt;script src="assets/js/paliLookup.js"&gt;&lt;/script&gt;
+  <br><br>
+4. Скрипт автоматически будет открывать Русскую версию DPD онлайн, если: есть запись в LocalStorage "siteLanguage":"ru" или url содержит /ru/ или url содержит ml.html
+ </span>
+    </div>
+  </div>
+  <!-- включите в ваш проект -->
+  <script src="assets/js/paliLookup.js"></script>
+</body>
+</html>

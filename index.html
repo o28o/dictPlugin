@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pali Dictionary Demo</title>
+
+<!-- include me into your project -->
+  <link rel="stylesheet" href="assets/css/paliLookup.css">
+  
+<!-- do not include me into your project -->  
+  <link rel="stylesheet" href="assets/css/demo.css">
+
+</head>
+<body>
+  <div class="container">
+<div style="text-align: right;">
+    en <a href="./demo-ru-ml.html">ru</a>
+</div>
+      <br><br>
+   <h1>Pali Popup-dictionary Demo</h1> 
+      
+<!-- include me into your project Button -->
+    <button class="toggle-dict-btn">
+      <img src="assets/svg/comment-slash.svg" class="common-size-icon4" alt="Toggle Dictionary">
+      Toggle Dictionary
+    </button> Turn <a href=https://dpdict.net>DPD</a> iframe Popup On/Off.      
+<!-- include me into your project Button end -->
+
+
+<!-- DON'T forget to wrap Pali text in <span class="pli-lang">PALI TEXT</span>-->
+    <div>
+      <span class="pli-lang">Idaṁ kho pana, bhikkhave, dukkhaṁ ariyasaccaṁ—</span><br>
+      <span class="eng-lang">Your prefered translation goes here. Click Pali text to open DPD iframe.</span><br><br>
+      <span class="pli-lang">jātipi dukkhā, jarāpi dukkhā, byādhipi dukkho, maraṇampi dukkhaṁ, appiyehi sampayogo dukkho, piyehi vippayogo dukkho, yampicchaṁ na labhati tampi dukkhaṁ—saṅkhittena pañcupādānakkhandhā dukkhā.</span><br>
+<span class="eng-lang">To make Pali text clickable:<br>
+
+1. it should be enclosed in &lt;span class="pli-lang"&gt;Pali text &lt;/span&gt;
+<br>
+<br>
+2. styles should be applied in the Head section: &lt;link rel="stylesheet" href="assets/css/paliLookup.css"&gt;
+<br><br>
+3. javascript should be applied after the Pali text, e.g. in the end of the Body section:
+ &lt;script src="assets/js/paliLookup.js"&gt;&lt;/script&gt;
+
+ </span>
+    </div>
+  </div>
+  <!-- include me into your project -->
+  <script src="assets/js/paliLookup.js"></script>
+</body>
+</html>
