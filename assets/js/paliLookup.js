@@ -192,11 +192,15 @@ function processPliLangElements(container = document) {
 
           // Добавляем обработчик клика
           span.addEventListener('click', () => {
-            if (dictionaryVisible) {
-              const cleanWord = word.replace(
-                /^[‘“"(«»‘’'„”]+|[.,!?;:()‘“"«»‘’'„”–—]+$/g,
+           let cleanWord = word.replace(
+                /^[‘“"(«»…–—‘’'„”]+|[.,!?;:()‘“"«»‘’'„”…–—]+$/g,
                 ''
               ).toLowerCase();
+               cleanWord = cleanWord.replace(
+                /[‘“"»‘’'„”]+/g, "'"
+              );
+              console.log('cleanWord', cleanWord);          
+            if (dictionaryVisible) {
               const url = `${dpdlang}?q=${encodeURIComponent(cleanWord)}`;
               iframe.src = url;
               popup.style.display = 'block';
