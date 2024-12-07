@@ -173,6 +173,7 @@ function processPliLangElements(container = document) {
 
         const nodeWords = node.textContent
           .trim()
+          .replace(/—/g,' — ')
           .split(/\s+/)
           .filter((w) => w); // Убираем лишние пробелы
 
