@@ -1,12 +1,12 @@
 
 
-    /* Стили для обычного текста */
+    /* text styles */
     .pli-lang {
       cursor: text; 
       color: inherit; 
     }
 
-    /* Стили для popup */
+    /* styles for popup */
     .popup {
       position: fixed;
       top: 50%;
@@ -37,7 +37,7 @@
   height: 30px;
   width: 30px;
   cursor: pointer;
-  border-radius: 100%; /* делает кнопку круглой */
+  border-radius: 100%; /* rounded corners */
 }
 
     .overlay {

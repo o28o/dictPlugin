@@ -1,18 +1,17 @@
-
-// Проверяем язык в localStorage
+// Check the language in localStorage
 const siteLanguage = localStorage.getItem('siteLanguage');
 
-  // Устанавливаем правильный URL для словаря в зависимости от языка
+// Set the correct URL for the dictionary depending on the language
 let dpdlang;
 
-// Условие для проверки языка сайта и URL
+// Condition to check the site language and URL
 if (window.location.href.includes('/ru/') || window.location.href.includes('ml.html')) {
   dpdlang = 'https://dpdict.net/ru/';
 } else {
   dpdlang = 'https://dpdict.net/';
 }
 
-// Создание элементов для Popup с возможностью изменения размера и перемещения
+// Create elements for Popup with resizing and dragging functionality
 function createPopup() {
   const overlay = document.createElement('div');
   overlay.classList.add('overlay');
@@ -21,7 +20,7 @@ function createPopup() {
   popup.classList.add('popup');
   popup.style.position = 'fixed';
 
-  // Устанавливаем сохранённые размеры и позицию, если они есть
+  // Set saved sizes and positions, if available
   const savedWidth = localStorage.getItem('popupWidth');
   const savedHeight = localStorage.getItem('popupHeight');
   const savedTop = localStorage.getItem('popupTop');
@@ -39,9 +38,9 @@ function createPopup() {
   const iframe = document.createElement('iframe');
   iframe.src = '';
   iframe.style.width = '100%';
-  iframe.style.height = 'calc(100% - 10px)'; // Оставляем место для заголовка
+  iframe.style.height = 'calc(100% - 10px)'; // Leave space for the header
 
-  // Добавляем заголовок для перетаскивания
+  // Add header for dragging
   const header = document.createElement('div');
   header.classList.add('popup-header');
   header.style.cursor = 'move';
@@ -56,11 +55,11 @@ function createPopup() {
   popup.appendChild(closeBtn);
   popup.appendChild(iframe);
 
-  // Добавляем popup и overlay на страницу
+  // Add popup and overlay to the page
   document.body.appendChild(overlay);
   document.body.appendChild(popup);
 
-  // Функция для сохранения позиции и размеров
+  // Function to save position and size
   function savePopupState() {
     localStorage.setItem('popupWidth', popup.style.width);
     localStorage.setItem('popupHeight', popup.style.height);
@@ -68,21 +67,21 @@ function createPopup() {
     localStorage.setItem('popupLeft', popup.style.left);
   }
 
-  // Перетаскивание окна
+  // Dragging functionality
   let isDragging = false;
   let startX, startY, initialLeft, initialTop;
 
-  // Обработчик нажатия для мыши (десктоп)
+  // Mouse down handler (desktop)
   function startDrag(e) {
     isDragging = true;
-    startX = e.clientX || e.touches[0].clientX; // Поддержка сенсорных устройств
+    startX = e.clientX || e.touches[0].clientX; // Support for touch devices
     startY = e.clientY || e.touches[0].clientY;
     initialLeft = parseInt(popup.style.left || 0, 10);
     initialTop = parseInt(popup.style.top || 0, 10);
     e.preventDefault();
   }
 
-  // Обработчик перемещения для мыши (десктоп)
+  // Mouse move handler (desktop)
   function moveDrag(e) {
     if (isDragging) {
       const deltaX = (e.clientX || e.touches[0].clientX) - startX;
@@ -92,7 +91,7 @@ function createPopup() {
     }
   }
 
-  // Обработчик окончания перетаскивания для мыши (десктоп)
+  // Mouse up handler (desktop)
   function stopDrag() {
     if (isDragging) {
       isDragging = false;
@@ -100,17 +99,17 @@ function createPopup() {
     }
   }
 
-  // Обработчики для перетаскивания на десктопе
+  // Drag handlers for desktop
   header.addEventListener('mousedown', startDrag);
   document.addEventListener('mousemove', moveDrag);
   document.addEventListener('mouseup', stopDrag);
 
-  // Обработчики для перетаскивания на мобильных устройствах
+  // Drag handlers for mobile devices
   header.addEventListener('touchstart', startDrag);
   document.addEventListener('touchmove', moveDrag);
   document.addEventListener('touchend', stopDrag);
 
-  // Изменение размеров окна
+  // Resizing functionality
   popup.style.resize = 'both';
   popup.style.overflow = 'auto';
 
@@ -122,25 +121,25 @@ function createPopup() {
   return { overlay, popup, closeBtn, iframe };
 }
 
-// Вставка popup на страницу
+// Insert popup into the page
 const { overlay, popup, closeBtn, iframe } = createPopup();
 
-// Закрытие popup при нажатии на кнопку или на overlay
+// Close popup when clicking the button or overlay
 closeBtn.addEventListener('click', () => {
   popup.style.display = 'none';
   overlay.style.display = 'none';
-  iframe.src = ''; // Очищаем iframe
+  iframe.src = ''; // Clear iframe
 });
 
 overlay.addEventListener('click', () => {
   popup.style.display = 'none';
   overlay.style.display = 'none';
-  iframe.src = ''; // Очищаем iframe
+  iframe.src = ''; // Clear iframe
 });
 
 console.log('lookup dict ', dpdlang, ' siteLanguage ', siteLanguage);
 
-// Проверяем состояние в localStorage при загрузке страницы
+// Check state in localStorage when the page loads
 let dictionaryVisible = localStorage.getItem('dictionaryVisible') === 'true';
 
 const toggleBtn = document.querySelector('.toggle-dict-btn');
@@ -150,11 +149,11 @@ if (dictionaryVisible) {
   toggleBtn.innerHTML = '<img class="dictIcon" src="/assets/svg/comment-slash.svg"></img>';
 }
 
-// Обработчик кнопки для включения/выключения отображения словаря
+// Toggle button handler for enabling/disabling dictionary visibility
 toggleBtn.addEventListener('click', () => {
   dictionaryVisible = !dictionaryVisible;
 
-  // Сохраняем состояние в localStorage
+  // Save state in localStorage
   localStorage.setItem('dictionaryVisible', dictionaryVisible);
 
   if (dictionaryVisible) {
@@ -164,17 +163,21 @@ toggleBtn.addEventListener('click', () => {
   }
 });
 
-
-// Перехватчик кликов по слову
+// Click event handler for word lookup
 document.addEventListener('click', function(event) {
-    // Проверяем, что клик был по элементу с классом "pli-lang"
-    if (event.target.closest('.pli-lang')) { // Учитываем вложенные элементы
+    // Check if the click was on an element with the "pli-lang" class
+    if (event.target.closest('.pli-lang')) { // Account for nested elements
         const clickedWord = getClickedWordWithHTML(event.target, event.clientX, event.clientY);
 
+        // If the click was on an <a> link, do nothing
+        if (event.target.closest('a')) {
+            return;
+        }
+
         if (clickedWord) {
-            // Убираем кавычки или апострофы в начале слова
+            // Remove quotes or apostrophes at the beginning of the word
             const cleanedWord = cleanWord(clickedWord);
-            console.log('Клик по слову:', cleanedWord);
+            console.log('Clicked word:', cleanedWord);
 
             if (dictionaryVisible) {
                 const url = `${dpdlang}search_html?q=${encodeURIComponent(cleanedWord)}`;
@@ -186,56 +189,56 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Функция для определения слова, по которому кликнули, с учетом вложенного HTML
+// Function to determine the clicked word, considering nested HTML
 function getClickedWordWithHTML(element, x, y) {
-    // Получаем диапазон по координатам
+    // Get the range based on coordinates
     const range = document.caretRangeFromPoint(x, y);
     if (!range) return null;
 
-    // Находим родительский элемент с полным текстом
-    const parentElement = element.closest('.pli-lang'); // Убедимся, что это верхний элемент
+    // Find the parent element with the full text
+    const parentElement = element.closest('.pli-lang'); // Ensure it's the top element
     if (!parentElement) {
-        console.log('Родительский элемент с классом pli-lang не найден.');
+        console.log('Parent element with the "pli-lang" class not found.');
         return null;
     }
 
-    // Собираем полный текст всего родительского элемента
+    // Get the full text of the parent element
     const fullText = getFullTextFromElement(parentElement);
 
-    // Определяем глобальное смещение в полном тексте
+    // Calculate the global offset in the full text
     const globalOffset = calculateOffsetWithHTML(parentElement, range.startContainer, range.startOffset);
     if (globalOffset === -1) {
-        console.error('Не удалось вычислить глобальное смещение.');
+        console.error('Failed to calculate global offset.');
         return null;
     }
 
-    console.log('Смещение в полном тексте:', globalOffset);
+    console.log('Offset in the full text:', globalOffset);
 
-    // Находим границы слова от пробела до пробела
-    const start = fullText.lastIndexOf(' ', globalOffset - 1) + 1; // После последнего пробела
+    // Find the word boundaries from space to space
+    const start = fullText.lastIndexOf(' ', globalOffset - 1) + 1; // After the last space
     const end = fullText.indexOf(' ', globalOffset);
     const word = fullText.slice(start, end === -1 ? undefined : end);
 
-    console.log('Найденное слово:', word);
+    console.log('Found word:', word);
     return word;
 }
 
-// Функция для получения полного текста элемента (всей строки)
+// Function to get the full text of an element (entire line)
 function getFullTextFromElement(element) {
     const textNodes = [];
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
 
     let node;
     while ((node = walker.nextNode())) {
-        textNodes.push(node.textContent); // Собираем текст всех текстовых узлов
+        textNodes.push(node.textContent); // Collect the text of all text nodes
     }
 
-    const combinedText = textNodes.join(''); // Склеиваем в единую строку
-    console.log('текст всех узлов:', combinedText);
+    const combinedText = textNodes.join(''); // Combine into a single string
+    console.log('Text of all nodes:', combinedText);
     return combinedText;
 }
 
-// Функция для расчёта глобального смещения
+// Function to calculate the global offset
 function calculateOffsetWithHTML(element, targetNode, targetOffset) {
     let offset = 0;
 
@@ -244,22 +247,19 @@ function calculateOffsetWithHTML(element, targetNode, targetOffset) {
 
     while ((node = walker.nextNode())) {
         if (node === targetNode) {
-            return offset + targetOffset; // Возвращаем глобальное смещение
+            return offset + targetOffset; // Return global offset
         }
         offset += node.textContent.length;
     }
 
-    console.log('Целевой узел не найден.');
+    console.log('Target node not found.');
     return -1;
 }
 
-
-// Функция для очистки слова от лишних символов
+// Function to clean the word from unnecessary characters
 function cleanWord(word) {
     return word
-        .replace(/^[\s'‘—.–…"“”]+/, '') // Убираем символы в начале, включая пробелы и тире
-        .replace(/[\s'‘,—.—–"“…:;”]+$/, '') // Убираем символы в конце, включая пробелы и тире
+        .replace(/^[\s'‘—.–…"“”]+/, '') // Remove characters at the start, including spaces and dashes
+        .replace(/[\s'‘,—.—–"“…:;”]+$/, '') // Remove characters at the end, including spaces and dashes
         .toLowerCase();
 }
-
-
