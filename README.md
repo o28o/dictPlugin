@@ -6,9 +6,9 @@ This code uses Digital Pali Dictionary [DPD](https://github.com/digitalpalidicti
 
 ## Demos
 
-### [English Demo](https://find.dhamma.gift/assets/dpdPlugin/?s=pi$)
+### [English Demo](https://o28o.github.io/plugin/index.html?s=pi$)
 
-### [Russian Demo](https://find.dhamma.gift/assets/dpdPlugin/demo-ru-ml.html?s=dukkh)
+### [Russian Demo](https://o28o.github.io/plugin/demo-ru-ml.html?s=dukkh)
 
 ## Instructions
 
