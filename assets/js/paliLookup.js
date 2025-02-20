@@ -33,7 +33,7 @@ function createPopup() {
 
   const closeBtn = document.createElement('button');
   closeBtn.classList.add('close-btn');
-  closeBtn.innerHTML = '<img src="/assets/svg/xmark.svg" class=""></img>';
+  closeBtn.innerHTML = '<img src="assets/svg/xmark.svg" class=""></img>';
 
   const iframe = document.createElement('iframe');
   iframe.src = '';
@@ -144,9 +144,9 @@ let dictionaryVisible = localStorage.getItem('dictionaryVisible') === 'true';
 
 const toggleBtn = document.querySelector('.toggle-dict-btn');
 if (dictionaryVisible) {
-  toggleBtn.innerHTML = '<img class="dictIcon" src="/assets/svg/comment.svg"></img>';
+  toggleBtn.innerHTML = '<img class="dictIcon" src="assets/svg/comment.svg"></img>';
 } else {
-  toggleBtn.innerHTML = '<img class="dictIcon" src="/assets/svg/comment-slash.svg"></img>';
+  toggleBtn.innerHTML = '<img class="dictIcon" src="assets/svg/comment-slash.svg"></img>';
 }
 
 // Toggle button handler for enabling/disabling dictionary visibility
@@ -157,9 +157,9 @@ toggleBtn.addEventListener('click', () => {
   localStorage.setItem('dictionaryVisible', dictionaryVisible);
 
   if (dictionaryVisible) {
-    toggleBtn.innerHTML = '<img class="dictIcon" src="/assets/svg/comment.svg"></img>';
+    toggleBtn.innerHTML = '<img class="dictIcon" src="assets/svg/comment.svg"></img>';
   } else {
-    toggleBtn.innerHTML = '<img class="dictIcon" src="/assets/svg/comment-slash.svg"></img>';
+    toggleBtn.innerHTML = '<img class="dictIcon" src="assets/svg/comment-slash.svg"></img>';
   }
 });
 
