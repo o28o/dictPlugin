@@ -1,8 +1,10 @@
 # dpdPlugin
 
-Iframe-based simple Pali Lookup Dictionary for any site.
+Simple yet very convenient Pali Lookup Dictionary for any site.
 
-This code uses Digital Pali Dictionary [DPD](https://github.com/digitalpalidictionary/dpd-db) Online. 
+It might be slightly outdated, please check the latest version on [read.dhamma.gift](https://dhamma.gift/sc/?q=sn56.11)
+
+This plugin uses Digital Pali Dictionary as Pali Dictionary. More information about [DPD here](https://github.com/digitalpalidictionary/dpd-db). 
 
 ## Demos
 
@@ -22,7 +24,7 @@ To make Pali text clickable:
    ```html
    <link rel="stylesheet" href="assets/css/paliLookup.css">
 
-4. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section:
+4. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section. You can modify connection url or desired endpoint in this file:
    ```html
    <script src="assets/js/paliLookup.js"></script>
 
