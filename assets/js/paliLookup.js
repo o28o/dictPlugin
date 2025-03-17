@@ -6,9 +6,12 @@ let dpdlang;
 
 // Condition to check the site language and URL
 if (window.location.href.includes('/ru/') || window.location.href.includes('ml.html')) {
-  dpdlang = 'https://dpdict.net/ru/';
+ 
+  dpdlang = 'https://dict.dhamma.gift/ru/';
+  //dpdlang = 'https://dpdict.net/ru/';
 } else {
-  dpdlang = 'https://dpdict.net/';
+  dpdlang = 'https://dict.dhamma.gift/';
+  //dpdlang = 'https://dpdict.net/';
 }
 
 // Create elements for Popup with resizing and dragging functionality
