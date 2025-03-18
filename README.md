@@ -8,7 +8,7 @@ It might be slightly outdated, please check the latest version on [read.dhamma.g
 This plugin uses Digital Pali Dictionary as Pali Dictionary. More information about [DPD here](https://github.com/digitalpalidictionary/dpd-db). 
 
 ## for End Users (requires installing browser extention and setup):
-There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/ExtentionWay.md) 
+There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
 
 ## Demos
 
