@@ -1,4 +1,4 @@
-# dpdPlugin
+# dictPlugin
 
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
