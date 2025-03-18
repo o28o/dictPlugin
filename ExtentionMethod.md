@@ -6,6 +6,8 @@ Adding Pali Lookup to any site, works for any browser that supports custom js ex
 4. Open or refresh page and click the desired word. Enjoy.
 
 
+This is a pretty basic code. If you'll get better solution for this case, please let me know.
+
    ## Code to paste
 ```
 // ==UserScript==
