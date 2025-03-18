@@ -1,8 +1,8 @@
-Adding Pali Lookup to any site, works for any browser that supports custom js extentions. Chrome, Edge, Brave.
+Adding Pali Lookup to any site, works for any browser that supports custom js extentions. e.g. Chrome, Edge, Brave.
 
-1. Install one of the custom js extentions of your choice: eg Violentmonkey, Tampermonkey, ScriptCat
-2. create a custom script with following text, header might vary this code is suitable for Tampermonkey and ScriptCat without changes
-3. enable the plugin, enable the custom script.
+1. Install one of the custom js extentions of your choice: e.g. Tampermonkey, ScriptCat, Violentmonkey.
+2. Create a custom script with the code listed below. Header might slightly vary. This code is suitable for Tampermonkey and ScriptCat without any changes.
+3. Enable the plugin, enable the custom script.
 4. Open or refresh page and click the desired word. Enjoy.
 
 
