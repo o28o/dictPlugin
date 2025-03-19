@@ -25,9 +25,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 (function() {
     'use strict';
 
-   // const dpdlang = 'https://dict.dhamma.gift/?q=';
-   const dpdlang = 'https://dict.dhamma.gift/gd?search=';
-
+    const dpdlang = 'https://dict.dhamma.gift/gd?search=';
     const storageKey = 'dictPopupSize';
 
     function createPopup() {
@@ -39,7 +37,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         overlay.style.width = '100%';
         overlay.style.height = '100%';
         overlay.style.background = 'rgba(0, 0, 0, 0.5)';
-        overlay.style.zIndex = '99999';
+        overlay.style.zIndex = '99999'; // Оверлей выше всех элементов, кроме окна
         overlay.style.display = 'none';
 
         const popup = document.createElement('div');
@@ -53,7 +51,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         popup.style.background = 'white';
         popup.style.border = '2px solid #666';
         popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
-        popup.style.zIndex = '100000';
+        popup.style.zIndex = '100000'; // Окно выше оверлея
         popup.style.display = 'none';
         popup.style.resize = 'both';
         popup.style.overflow = 'hidden';
@@ -77,10 +75,42 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         iframe.style.height = '100%';
         iframe.style.border = 'none';
 
+        // Создаем верхнюю панель для перетаскивания
+        const dragHandle = document.createElement('div');
+        dragHandle.style.position = 'absolute';
+        dragHandle.style.top = '0';
+        dragHandle.style.left = '0';
+        dragHandle.style.width = '100%';
+        dragHandle.style.height = '5px';
+        dragHandle.style.background = '#f0f0f0';
+        dragHandle.style.cursor = 'move';
+
+        popup.appendChild(dragHandle);
         popup.appendChild(closeBtn);
         popup.appendChild(iframe);
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
+
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        dragHandle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - popup.getBoundingClientRect().left;
+            offsetY = e.clientY - popup.getBoundingClientRect().top;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                popup.style.left = `${e.clientX - offsetX}px`;
+                popup.style.top = `${e.clientY - offsetY}px`;
+                popup.style.transform = 'none';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
 
         function closePopup() {
             popup.style.display = 'none';
@@ -88,20 +118,15 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
             iframe.src = '';
         }
 
-// Закрытие popup при нажатии на кнопку или на overlay
-closeBtn.addEventListener('click', () => {
-  popup.style.display = 'none';
-  overlay.style.display = 'none';
-  iframe.src = ''; // Очищаем iframe
-  resizeObserver.disconnect();
-});
+        closeBtn.addEventListener('click', closePopup);
 
 overlay.addEventListener('click', () => {
   popup.style.display = 'none';
   overlay.style.display = 'none';
   iframe.src = ''; // Очищаем iframe
+  closePopup();
 });
-        
+
 
         function saveSize() {
             const size = {
@@ -120,8 +145,21 @@ overlay.addEventListener('click', () => {
             }
         }
 
+        function resetSize() {
+            // Сбрасываем размеры и позицию окна
+            popup.style.width = '80%';
+            popup.style.height = '80%';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            localStorage.removeItem(storageKey); // Удаляем сохраненные размеры
+        }
+
         const resizeObserver = new ResizeObserver(saveSize);
         resizeObserver.observe(popup);
+
+        // Сбрасываем размеры при изменении размеров окна браузера
+        window.addEventListener('resize', resetSize);
 
         loadSize();
 
@@ -129,6 +167,15 @@ overlay.addEventListener('click', () => {
     }
 
     const { overlay, popup, iframe } = createPopup();
+
+    function processWord(word) {
+        return word
+            .replace(/^[\s'‘—.–…"“”]+/, '') // Убираем символы в начале, включая пробелы и тире
+            .replace(/[\s'‘,—.—–"“…:;”]+$/, '') // Убираем символы в конце, включая пробелы и тире
+            .replace(/[‘'’‘"“””]+/g, "'") // Заменяем кавычки в середине
+            .trim() // Убираем лишние пробелы
+            .toLowerCase(); // Приводим к нижнему регистру
+    }
 
     function getWordUnderCursor(event) {
         const range = document.caretRangeFromPoint(event.clientX, event.clientY);
@@ -154,8 +201,9 @@ overlay.addEventListener('click', () => {
 
         const clickedWord = getWordUnderCursor(event);
         if (clickedWord) {
-            console.log('Слово:', clickedWord);
-            const url = `${dpdlang}${encodeURIComponent(clickedWord)}`;
+            const processedWord = processWord(clickedWord); // Обрабатываем слово
+            console.log('Слово:', processedWord);
+            const url = `${dpdlang}${encodeURIComponent(processedWord)}`;
             iframe.src = url;
             popup.style.display = 'block';
             overlay.style.display = 'block';
