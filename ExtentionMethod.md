@@ -32,10 +32,10 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
    // const dpdlang = 'https://dict.dhamma.gift/gd?search=';
 
 //uncomment for full online mode
- //  const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
+  const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
 
 //uncomment for DictTango Android App Offline mode
- dpdlang = 'dttp://app.dicttango/WordLookup?word=';
+// dpdlang = 'dttp://app.dicttango/WordLookup?word=';
 
     const storageKey = 'dictPopupSize';
 
