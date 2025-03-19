@@ -14,21 +14,26 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 ```
 // ==UserScript==
 // @name         dict.dhamma.gift lookup
-// @namespace    https://dhamma.gift/
+// @namespace    https://github.com/o28o/dictPlugin
 // @version      2025-03-18
-// @description  on click Pali Lookup
+// @description  on click Dhamma.gift Search and Pali Lookup
 // @author       You
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
+
 (function() {
     'use strict';
 
     const dhammaGiftURL = 'https://dhamma.gift/?q=';
     const dgParams = '&p=-kn';
-    const dpdlang = 'https://dict.dhamma.gift/gd?search=';
+   // const dpdlang = 'https://dict.dhamma.gift/gd?search=';
+   const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
     const storageKey = 'dictPopupSize';
 
+    let isEnabled = true;
+
+    // Функция для создания popup
     function createPopup() {
         const overlay = document.createElement('div');
         overlay.classList.add('overlay');
@@ -57,24 +62,24 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         popup.style.resize = 'both';
         popup.style.overflow = 'hidden';
 
-const closeBtn = document.createElement('button');
-closeBtn.classList.add('close-btn');
-closeBtn.textContent = '×'; // Крестик
-closeBtn.style.position = 'absolute';
-closeBtn.style.top = '10px';
-closeBtn.style.right = '10px';
-closeBtn.style.border = 'none';
-closeBtn.style.background = '#B71C1C';
-closeBtn.style.color = 'white';
-closeBtn.style.cursor = 'pointer';
-closeBtn.style.width = '30px';
-closeBtn.style.height = '30px';
-closeBtn.style.borderRadius = '50%';
-closeBtn.style.fontSize = '24px'; // Увеличиваем размер крестика
-closeBtn.style.display = 'flex';
-closeBtn.style.alignItems = 'center';
-closeBtn.style.justifyContent = 'center';
-closeBtn.style.lineHeight = '1'; // Убираем лишний отступ
+        const closeBtn = document.createElement('button');
+        closeBtn.classList.add('close-btn');
+        closeBtn.textContent = '×';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '10px';
+        closeBtn.style.right = '10px';
+        closeBtn.style.border = 'none';
+        closeBtn.style.background = '#B71C1C';
+        closeBtn.style.color = 'white';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.style.width = '30px';
+        closeBtn.style.height = '30px';
+        closeBtn.style.borderRadius = '50%';
+        closeBtn.style.fontSize = '24px';
+        closeBtn.style.display = 'flex';
+        closeBtn.style.alignItems = 'center';
+        closeBtn.style.justifyContent = 'center';
+      //  closeBtn.style.lineHeight = '1';
 
         const openBtn = document.createElement('a');
         openBtn.classList.add('open-btn');
@@ -94,16 +99,18 @@ closeBtn.style.lineHeight = '1'; // Убираем лишний отступ
         openBtn.style.textDecoration = 'none';
         openBtn.target = '_blank';
 
-openBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="white" style="transform: scaleX(-1);">
-        <path d="M505 442.7l-99.7-99.7c28.4-35.3 45.7-79.8 45.7-128C451 98.8 352.2 0 224 0S-3 98.8-3 224s98.8 224 224 224c48.2 0 92.7-17.3 128-45.7l99.7 99.7c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4c12.5-12.5 12.5-32.8 0-45.3zM224 384c-88.4 0-160-71.6-160-160S135.6 64 224 64s160 71.6 160 160-71.6 160-160 160z"/>
-    </svg>
-`;
+        openBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="white" style="transform: scaleX(-1);">
+                <path d="M505 442.7l-99.7-99.7c28.4-35.3 45.7-79.8 45.7-128C451 98.8 352.2 0 224 0S-3 98.8-3 224s98.8 224 224 224c48.2 0 92.7-17.3 128-45.7l99.7 99.7c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4c12.5-12.5 12.5-32.8 0-45.3zM224 384c-88.4 0-160-71.6-160-160S135.6 64 224 64s160 71.6 160 160-71.6 160-160 160z"/>
+            </svg>
+        `;
 
-        const iframe = document.createElement('iframe');
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
+const iframe = document.createElement('iframe');
+//iframe.sandbox = ''; //allow-scripts allow-same-origin allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-top-navigation allow-top-navigation-by-user-activation
+iframe.style.height = '100%';
+iframe.style.width = '100%';
+iframe.style.border = 'none';
+
 
         const dragHandle = document.createElement('div');
         dragHandle.style.position = 'absolute';
@@ -142,11 +149,12 @@ openBtn.innerHTML = `
             isDragging = false;
         });
 
-        function closePopup() {
-            popup.style.display = 'none';
-            overlay.style.display = 'none';
-            iframe.src = '';
-        }
+function closePopup(event) {
+    event.stopPropagation(); // Останавливаем всплытие события
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+    iframe.src = '';
+}
 
         closeBtn.addEventListener('click', closePopup);
         overlay.addEventListener('click', closePopup);
@@ -212,7 +220,7 @@ openBtn.innerHTML = `
         return null;
     }
 
-    document.addEventListener('click', function (event) {
+    function handleClick(event) {
         if (event.target.closest('a, button, input, textarea, select')) return;
         const clickedWord = getWordUnderCursor(event);
         if (clickedWord) {
@@ -224,6 +232,8 @@ openBtn.innerHTML = `
             overlay.style.display = 'block';
             openBtn.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`;
         }
-    });
+    }
+
+    document.addEventListener('click', handleClick);
 })();
    ```
