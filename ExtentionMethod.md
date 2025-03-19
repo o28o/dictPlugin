@@ -21,11 +21,11 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
-
 (function() {
     'use strict';
 
-//    const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
+    const dhammaGiftURL = 'https://dhamma.gift/?q=';
+    const dgParams = '&p=-kn';
     const dpdlang = 'https://dict.dhamma.gift/gd?search=';
     const storageKey = 'dictPopupSize';
 
@@ -38,7 +38,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         overlay.style.width = '100%';
         overlay.style.height = '100%';
         overlay.style.background = 'rgba(0, 0, 0, 0.5)';
-        overlay.style.zIndex = '99999'; // Оверлей выше всех элементов, кроме окна
+        overlay.style.zIndex = '99999';
         overlay.style.display = 'none';
 
         const popup = document.createElement('div');
@@ -52,31 +52,59 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         popup.style.background = 'white';
         popup.style.border = '2px solid #666';
         popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
-        popup.style.zIndex = '100000'; // Окно выше оверлея
+        popup.style.zIndex = '100000';
         popup.style.display = 'none';
         popup.style.resize = 'both';
         popup.style.overflow = 'hidden';
 
-        const closeBtn = document.createElement('button');
-        closeBtn.classList.add('close-btn');
-        closeBtn.textContent = '×';
-        closeBtn.style.position = 'absolute';
-        closeBtn.style.top = '10px';
-        closeBtn.style.right = '10px';
-        closeBtn.style.border = 'none';
-        closeBtn.style.background = '#CE0520';
-        closeBtn.style.color = 'white';
-        closeBtn.style.cursor = 'pointer';
-        closeBtn.style.width = '30px';
-        closeBtn.style.height = '30px';
-        closeBtn.style.borderRadius = '50%';
+const closeBtn = document.createElement('button');
+closeBtn.classList.add('close-btn');
+closeBtn.textContent = '×'; // Крестик
+closeBtn.style.position = 'absolute';
+closeBtn.style.top = '10px';
+closeBtn.style.right = '10px';
+closeBtn.style.border = 'none';
+closeBtn.style.background = '#B71C1C';
+closeBtn.style.color = 'white';
+closeBtn.style.cursor = 'pointer';
+closeBtn.style.width = '30px';
+closeBtn.style.height = '30px';
+closeBtn.style.borderRadius = '50%';
+closeBtn.style.fontSize = '24px'; // Увеличиваем размер крестика
+closeBtn.style.display = 'flex';
+closeBtn.style.alignItems = 'center';
+closeBtn.style.justifyContent = 'center';
+closeBtn.style.lineHeight = '1'; // Убираем лишний отступ
+
+        const openBtn = document.createElement('a');
+        openBtn.classList.add('open-btn');
+        openBtn.style.position = 'absolute';
+        openBtn.style.top = '10px';
+        openBtn.style.right = '50px';
+        openBtn.style.border = 'none';
+        openBtn.style.background = '#244B26';
+        openBtn.style.color = 'white';
+        openBtn.style.cursor = 'pointer';
+        openBtn.style.width = '30px';
+        openBtn.style.height = '30px';
+        openBtn.style.borderRadius = '50%';
+        openBtn.style.display = 'flex';
+        openBtn.style.alignItems = 'center';
+        openBtn.style.justifyContent = 'center';
+        openBtn.style.textDecoration = 'none';
+        openBtn.target = '_blank';
+
+openBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="white" style="transform: scaleX(-1);">
+        <path d="M505 442.7l-99.7-99.7c28.4-35.3 45.7-79.8 45.7-128C451 98.8 352.2 0 224 0S-3 98.8-3 224s98.8 224 224 224c48.2 0 92.7-17.3 128-45.7l99.7 99.7c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4c12.5-12.5 12.5-32.8 0-45.3zM224 384c-88.4 0-160-71.6-160-160S135.6 64 224 64s160 71.6 160 160-71.6 160-160 160z"/>
+    </svg>
+`;
 
         const iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         iframe.style.border = 'none';
 
-        // Создаем верхнюю панель для перетаскивания
         const dragHandle = document.createElement('div');
         dragHandle.style.position = 'absolute';
         dragHandle.style.top = '0';
@@ -88,6 +116,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 
         popup.appendChild(dragHandle);
         popup.appendChild(closeBtn);
+        popup.appendChild(openBtn);
         popup.appendChild(iframe);
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
@@ -120,14 +149,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
         }
 
         closeBtn.addEventListener('click', closePopup);
-
-overlay.addEventListener('click', () => {
-  popup.style.display = 'none';
-  overlay.style.display = 'none';
-  iframe.src = ''; // Очищаем iframe
-  closePopup();
-});
-
+        overlay.addEventListener('click', closePopup);
 
         function saveSize() {
             const size = {
@@ -147,46 +169,39 @@ overlay.addEventListener('click', () => {
         }
 
         function resetSize() {
-            // Сбрасываем размеры и позицию окна
             popup.style.width = '80%';
             popup.style.height = '80%';
             popup.style.top = '50%';
             popup.style.left = '50%';
             popup.style.transform = 'translate(-50%, -50%)';
-            localStorage.removeItem(storageKey); // Удаляем сохраненные размеры
+            localStorage.removeItem(storageKey);
         }
 
         const resizeObserver = new ResizeObserver(saveSize);
         resizeObserver.observe(popup);
-
-        // Сбрасываем размеры при изменении размеров окна браузера
         window.addEventListener('resize', resetSize);
-
         loadSize();
 
-        return { overlay, popup, iframe };
+        return { overlay, popup, iframe, openBtn };
     }
 
-    const { overlay, popup, iframe } = createPopup();
+    const { overlay, popup, iframe, openBtn } = createPopup();
 
     function processWord(word) {
         return word
-            .replace(/^[\s'‘—.–…"“”]+/, '') // Убираем символы в начале, включая пробелы и тире
-            .replace(/[\s'‘,—.—–"“…:;”]+$/, '') // Убираем символы в конце, включая пробелы и тире
-            .replace(/[‘'’‘"“””]+/g, "'") // Заменяем кавычки в середине
-            .trim() // Убираем лишние пробелы
-            .toLowerCase(); // Приводим к нижнему регистру
+            .replace(/^[\s'‘—.–…"“”]+/, '')
+            .replace(/[\s'‘,—.—–"“…:;”]+$/, '')
+            .replace(/[‘'’‘"“””]+/g, "'")
+            .trim()
+            .toLowerCase();
     }
 
     function getWordUnderCursor(event) {
         const range = document.caretRangeFromPoint(event.clientX, event.clientY);
         if (!range) return null;
-
         const text = range.startContainer.textContent;
         const offset = range.startOffset;
-
         if (!text) return null;
-
         const regex = /[^\s,"";.–:—!?()]+/g;
         let match;
         while ((match = regex.exec(text)) !== null) {
@@ -199,17 +214,16 @@ overlay.addEventListener('click', () => {
 
     document.addEventListener('click', function (event) {
         if (event.target.closest('a, button, input, textarea, select')) return;
-
         const clickedWord = getWordUnderCursor(event);
         if (clickedWord) {
-            const processedWord = processWord(clickedWord); // Обрабатываем слово
+            const processedWord = processWord(clickedWord);
             console.log('Слово:', processedWord);
             const url = `${dpdlang}${encodeURIComponent(processedWord)}`;
             iframe.src = url;
             popup.style.display = 'block';
             overlay.style.display = 'block';
+            openBtn.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`;
         }
     });
-
 })();
    ```
