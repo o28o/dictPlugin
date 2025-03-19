@@ -27,12 +27,13 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 
     const dhammaGiftURL = 'https://dhamma.gift/?q=';
     const dgParams = '&p=-kn';
+let dpdlang; 
 
 //uncomment for compact online mode
-   // const dpdlang = 'https://dict.dhamma.gift/gd?search=';
+//  dpdlang = 'https://dict.dhamma.gift/gd?search=';
 
 //uncomment for full online mode
-  const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
+dpdlang = 'https://dict.dhamma.gift/search_html?q=';
 
 //uncomment for DictTango Android App Offline mode
 // dpdlang = 'dttp://app.dicttango/WordLookup?word=';
