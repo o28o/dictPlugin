@@ -25,6 +25,7 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 (function() {
     'use strict';
 
+//    const dpdlang = 'https://dict.dhamma.gift/search_html?q=';
     const dpdlang = 'https://dict.dhamma.gift/gd?search=';
     const storageKey = 'dictPopupSize';
 
