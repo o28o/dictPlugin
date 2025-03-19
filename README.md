@@ -1,5 +1,8 @@
 # dictPlugin
 
+## for End Users (requires installing browser extention and setup):
+There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
+
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
 
@@ -7,9 +10,6 @@ It might be slightly outdated, please check the latest version on [read.dhamma.g
 
 This example uses Digital Pali Dictionary as Pali Dictionary but you can modify the link and use any Dictionary of your choice. 
 More information about [DPD here](https://github.com/digitalpalidictionary/dpd-db). 
-
-## for End Users (requires installing browser extention and setup):
-There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
 
 ## Demos
 
