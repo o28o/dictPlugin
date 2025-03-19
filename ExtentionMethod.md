@@ -5,7 +5,7 @@ Limitation: CORS related policies of some sites might block the iframe with the 
 1. Install one of the custom js extentions of your choice: e.g. Tampermonkey, ScriptCat, Violentmonkey.
 2. Enable developer mode in browser settings. 
 3. Create a custom script with the code listed below. This code is suitable for Tampermonkey and ScriptCat without any changes. For other extentions header part might slightly vary. 
-4. Enable the plugin, enable the custom script.
+4. Enable the extention, enable the custom script.
 5. Open or refresh page and click the desired word. Enjoy.
 
 This is a pretty basic code. If you'll improve it or get better solution for this case, please let me know.
