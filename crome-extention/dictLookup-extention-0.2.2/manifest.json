@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Dhamma.gift Search and Word Lookup",
+  "version": "0.2",
+  "description": "Search any word in Suttas - powered by Dhamma.gift and Lookup word Pali translation - powered by DPD",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://dict.dhamma.gift/",
+    "https://dhamma.gift/"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; frame-src https://dict.dhamma.gift;"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png"
+    }
+  },
+  "commands": {
+    "toggle_extension": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Toggle the extension on/off"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "128": "icon.png"
+  }
+}
