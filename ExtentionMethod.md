@@ -33,11 +33,11 @@ let dictURL;
 let sandboxsandboxSettings = '';
 
 //uncomment for compact online mode
-//  dictURL = 'https://dict.dhamma.gift/gd?search=';
+  dictURL = 'https://dict.dhamma.gift/gd?search=';
 
 //uncomment for full online mode
- dictURL = 'https://dict.dhamma.gift/search_html?q=';
- sandboxsandboxSettings = 'allow-scripts allow-forms allow-same-origin';
+// dictURL = 'https://dict.dhamma.gift/search_html?q=';
+// sandboxsandboxSettings = 'allow-scripts allow-forms allow-same-origin';
 
 //uncomment for DictTango Android App Offline mode
 //dictURL = 'dttp://app.dicttango/WordLookup?word=';
