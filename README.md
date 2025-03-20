@@ -11,7 +11,7 @@ Simple yet very convenient Pali Lookup Dictionary for any site.
 It might be slightly outdated, please check the latest version on [read.dhamma.gift](https://dhamma.gift/sc/?q=sn56.11)
 
 This example uses Digital Pali Dictionary as Pali Dictionary but you can modify the link and use any Dictionary of your choice. 
-More information about [DPD here](https://github.com/digitalpalidictionary/dpd-db). 
+More information about DPD [here](https://github.com/digitalpalidictionary/dpd-db). 
 
 ## Demos
 
