@@ -10,6 +10,8 @@ Limitation: CORS related policies of some sites might block the iframe with the 
 
 This is a pretty basic code. If you'll improve it or get better solution for this case, please let me know.
 
+If you're a webmaster and host Pali Texts. The [WebSitePlugin](https://github.com/o28o/dictPlugin) method is a much userfriendly way to add Pali Lookup to your site. 
+
    ## Code to paste in step 2
 ```
 // ==UserScript==
