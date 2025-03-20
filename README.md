@@ -12,7 +12,7 @@ This example uses Digital Pali Dictionary as Pali Dictionary but you can modify 
 More information about DPD [here](https://github.com/digitalpalidictionary/dpd-db). 
 
 ## Demos
-These are demos. They might be slightly outdated. Please check the latest live version on [Dhamma.gift Read](https://dhamma.gift/sc/?q=sn56.11)
+These demos might be slightly outdated. Please check the latest live version on [Dhamma.gift Read](https://dhamma.gift/sc/?q=sn56.11)
 
 ### [English Demo](https://o28o.github.io/plugin/index.html?s=pi$)
 
