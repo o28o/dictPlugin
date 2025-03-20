@@ -13,7 +13,9 @@ More information about DPD [here](https://github.com/digitalpalidictionary/dpd-d
 
 ## Demos
 These demos might be slightly outdated. 
-Please check the latest live version on [Dhamma.gift Read](https://dhamma.gift/sc/?q=sn56.11)
+Please check the latest live version on [Dhamma.gift Read](https://dhamma.gift/sc/?q=sn56.11). Use "comment bubble icon" to turn word lookup on/off and "gear icon" to choose the dictionary layout.
+
+For Demos just click on the "Bubble Icon" to turn word lookup On/Off.
 
 ### [English Demo](https://o28o.github.io/plugin/index.html?s=pi$)
 
