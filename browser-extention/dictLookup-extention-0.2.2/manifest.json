@@ -4,7 +4,10 @@
   "version": "0.2",
   "description": "Search any word in Suttas - powered by Dhamma.gift and Lookup word Pali translation - powered by DPD",
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["*://*/*"],
+  "host_permissions": [
+    "https://dict.dhamma.gift/",
+    "https://dhamma.gift/"
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; frame-src https://dict.dhamma.gift;"
   },
