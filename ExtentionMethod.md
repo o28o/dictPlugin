@@ -27,16 +27,19 @@ This is a pretty basic code. If you'll improve it or get better solution for thi
 
     const dhammaGiftURL = 'https://dhamma.gift/?q=';
     const dgParams = '&p=-kn';
-let dpdlang; 
+let dictURL;
+let sandboxsandboxSettings = '';
 
 //uncomment for compact online mode
-//  dpdlang = 'https://dict.dhamma.gift/gd?search=';
+//  dictURL = 'https://dict.dhamma.gift/gd?search=';
 
 //uncomment for full online mode
-dpdlang = 'https://dict.dhamma.gift/search_html?q=';
+dictURL = 'https://dict.dhamma.gift/search_html?q=';
+sandboxsandboxSettings = 'allow-scripts allow-forms allow-same-origin';
 
 //uncomment for DictTango Android App Offline mode
-// dpdlang = 'dttp://app.dicttango/WordLookup?word=';
+//dictURL = 'dttp://app.dicttango/WordLookup?word=';
+
 
     const storageKey = 'dictPopupSize';
 
@@ -60,9 +63,10 @@ dpdlang = 'https://dict.dhamma.gift/search_html?q=';
         popup.style.position = 'fixed';
         popup.style.top = '50%';
         popup.style.left = '50%';
-        popup.style.width = '80%';
-        popup.style.height = '80%';
-        popup.style.transform = 'translate(-50%, -50%)';
+  popup.style.width = '80%';
+popup.style.height = '80%';
+popup.style.maxWidth = '600px';
+popup.style.transform = 'translate(-50%, -50%)';
         popup.style.background = 'white';
         popup.style.border = '2px solid #666';
         popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
@@ -115,7 +119,12 @@ dpdlang = 'https://dict.dhamma.gift/search_html?q=';
         `;
 
 const iframe = document.createElement('iframe');
-//iframe.sandbox = ''; //allow-scripts allow-same-origin allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-top-navigation allow-top-navigation-by-user-activation
+
+           if (!dictURL.includes('dicttango')) {
+iframe.sandbox = sandboxsandboxSettings; 
+           }
+// 'allow-scripts allow-forms allow-same-origin allow-popups-to-escape-sandbox'; //allow-scripts allow-same-origin allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-top-navigation allow-top-navigation-by-user-activation
+// allow-downloads allow-downloads-without-user-activation allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation allow-top-navigation-by-user-activation allow-clipboard-read allow-clipboard-write
 iframe.style.height = '100%';
 iframe.style.width = '100%';
 iframe.style.border = 'none';
@@ -235,14 +244,14 @@ function closePopup(event) {
         if (clickedWord) {
             const processedWord = processWord(clickedWord);
             console.log('Слово:', processedWord);
-            const url = `${dpdlang}${encodeURIComponent(processedWord)}`;
+            const url = `${dictURL}${encodeURIComponent(processedWord)}`;
 
             iframe.src = url;
 
-           if (!dpdlang.includes('dicttango')) {
+           if (!dictURL.includes('dicttango')) {
             popup.style.display = 'block';
             overlay.style.display = 'block';
-           } 
+           }
 
 
             openBtn.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`;
