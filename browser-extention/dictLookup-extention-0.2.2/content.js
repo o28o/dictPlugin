@@ -227,16 +227,18 @@
         }
     }
 
-    // Initialize extension state from Chrome storage
-    chrome.storage.local.get(['isEnabled'], (result) => {
+    const browserAPI = window.chrome || window.browser; // Universal check for Chrome and Edge
+
+    // Initialize extension state
+    browserAPI.storage.local.get(['isEnabled'], (result) => {
         isEnabled = result.isEnabled !== undefined ? result.isEnabled : true;
         if (isEnabled) {
             document.addEventListener('click', handleClick);
         }
     });
 
-    // Listen for changes in extension state
-    chrome.storage.onChanged.addListener((changes, namespace) => {
+    // Listener for storage changes
+    browserAPI.storage.onChanged.addListener((changes, namespace) => {
         if (changes.isEnabled) {
             isEnabled = changes.isEnabled.newValue;
             if (isEnabled) {
@@ -248,4 +250,5 @@
             }
         }
     });
+
 })();

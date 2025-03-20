@@ -227,25 +227,30 @@
         }
     }
 
-    // Initialize extension state from Chrome storage
-    chrome.storage.local.get(['isEnabled'], (result) => {
-        isEnabled = result.isEnabled !== undefined ? result.isEnabled : true;
+
+
+const browserAPI = window.chrome || window.browser; // Универсальная проверка для Chrome и Edge
+
+// Инициализация состояния расширения
+browserAPI.storage.local.get(['isEnabled'], (result) => {
+    isEnabled = result.isEnabled !== undefined ? result.isEnabled : true;
+    if (isEnabled) {
+        document.addEventListener('click', handleClick);
+    }
+});
+
+// Слушатель изменений в хранилище
+browserAPI.storage.onChanged.addListener((changes, namespace) => {
+    if (changes.isEnabled) {
+        isEnabled = changes.isEnabled.newValue;
         if (isEnabled) {
             document.addEventListener('click', handleClick);
+        } else {
+            document.removeEventListener('click', handleClick);
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
         }
-    });
+    }
+});
 
-    // Listen for changes in extension state
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (changes.isEnabled) {
-            isEnabled = changes.isEnabled.newValue;
-            if (isEnabled) {
-                document.addEventListener('click', handleClick);
-            } else {
-                document.removeEventListener('click', handleClick);
-                popup.style.display = 'none';
-                overlay.style.display = 'none';
-            }
-        }
-    });
 })();
