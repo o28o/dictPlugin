@@ -5,8 +5,8 @@ For those who want to click the word and get the translation of the prefered Onl
 ## for End Users (requires installing browser extention and setup):
 There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
 
-![download](https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe)
 
+[![Microsoft Edge extension](https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe)](https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj)
 
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
