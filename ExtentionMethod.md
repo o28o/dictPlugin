@@ -18,11 +18,14 @@ Choose prefered dictionary and uncomment it.
 Don't forget to remove {WORD} from the examples
 
 e.g. To enable instant word lookup in Dicttango Android aplication.    
-```dictURL = 'dttp://app.dicttango/WordLookup?word={WORD}'; 
+
+```
+dictURL = 'dttp://app.dicttango/WordLookup?word={WORD}'; 
 ```
 
 You may use completly different dictionaries. Just need to know how to open the word. e.g. 
-```https://dsal.uchicago.edu/cgi-bin/app/pali_query.py?matchtype=default&qs={WORD}
+```
+https://dsal.uchicago.edu/cgi-bin/app/pali_query.py?matchtype=default&qs={WORD}
 https://www.wisdomlib.org/definition/{WORD}
 ```
    
