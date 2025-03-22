@@ -3,12 +3,16 @@
 For those who want to click the word and get the translation of the prefered Online dictionary. It's made for Pali Language, but can be customized to any Language or any Online Dictionary that supports word lookup in the URL parameters like this: https://somedict.online/?word=dukkha (GET parameters)
 
 ## for End Users (requires installing browser extention and setup):
-There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
+There are another ways to add Pali Lookup for literally any site:
 
-
-<a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj">
+As a <a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj">
     <img src="https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe" alt="Microsoft Edge extension" width="50">
-</a>
+</a> Microsoft Edge extention.
+
+As a <a href="[https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md)">
+    <img src="[https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe](https://github.com/user-attachments/assets/8f027cf2-0916-45cb-9415-7f99f0687f5f)" alt="TamperMonkey Script" width="50">
+</a> TamperMonkey User Script.
+
 
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
