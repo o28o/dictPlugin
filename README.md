@@ -6,7 +6,9 @@ For those who want to click the word and get the translation of the prefered Onl
 There is another way to add Pali Lookup for literally any site. [Read](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) 
 
 
-[![Microsoft Edge extension](https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe)](https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj)
+<a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj">
+    <img src="https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe" alt="Microsoft Edge extension" width="200">
+</a>
 
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
