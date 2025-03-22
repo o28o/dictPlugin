@@ -15,18 +15,20 @@ If you're a webmaster and host Pali Texts. The [WebSitePlugin](https://github.co
    ## To customize the dictionary, try following
 
 Choose prefered dictionary and uncomment it. 
-Don't forget to remove {WORD} from the examples
-
+**Don't forget to remove {WORD} from the examples
+**
 e.g. To enable instant word lookup in Dicttango Android aplication.    
 
 ```
 dictURL = 'dttp://app.dicttango/WordLookup?word={WORD}'; 
 ```
 
-You may use completly different dictionaries. Just need to know how to open the word. e.g. 
+You may use completly different dictionaries. Just need to know how to open the word. These are just examples: 
 ```
 https://dsal.uchicago.edu/cgi-bin/app/pali_query.py?matchtype=default&qs={WORD}
 https://www.wisdomlib.org/definition/{WORD}
+https://www.learnsanskrit.cc/translate?dir=au&search={WORD}
+https://sanskritdictionary.com/?iencoding=iast&lang=sans&action=Search&q={WORD}
 ```
    
    ## Code to paste in step 2
