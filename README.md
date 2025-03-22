@@ -5,11 +5,11 @@ For those who want to click the word and get the translation of the prefered Onl
 ## for End Users (requires installing browser extention and setup):
 There are another ways to add Pali Lookup for literally any site:
 
-As a <a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj">
+<a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj">
     <img src="https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe" alt="Microsoft Edge extension" width="50">
 </a> Microsoft Edge extention.
 
-As a <a href="https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md">
+<a href="https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md">
     <img src="https://github.com/user-attachments/assets/e20515b1-0061-4af7-8689-95a818ff1932" alt="TamperMonkey Script" width="50">
 </a> TamperMonkey User Script.
 
