@@ -10,7 +10,7 @@ As a <a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-searc
 </a> Microsoft Edge extention.
 
 As a <a href="[https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md)">
-    <img src="[https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe](https://github.com/user-attachments/assets/8f027cf2-0916-45cb-9415-7f99f0687f5f)" alt="TamperMonkey Script" width="50">
+    <img src="[https://github.com/user-attachments/assets/e20515b1-0061-4af7-8689-95a818ff1932](https://github.com/user-attachments/assets/e20515b1-0061-4af7-8689-95a818ff1932)" alt="TamperMonkey Script" width="50">
 </a> TamperMonkey User Script.
 
 
