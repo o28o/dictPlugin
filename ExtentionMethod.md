@@ -32,6 +32,8 @@ https://sanskritdictionary.com/?iencoding=iast&lang=sans&action=Search&q={WORD}
 ```
    
    ## Code to paste in step 2
+
+By default Compact DPD is used
 ```
 // ==UserScript==
 // @name         dict.dhamma.gift lookup
