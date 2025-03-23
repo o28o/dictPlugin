@@ -56,8 +56,19 @@ To make Pali text clickable:
 3. Styles should be applied in the `<head>` section:
    ```html
    <link rel="stylesheet" href="assets/css/paliLookup.css">
-
-4. JavaScript should be applied after the Pali text, e.g., at the end of the <body> section. You can modify connection url or desired endpoint in this file:
-   ```html
+   ```   
+4. Button should be added to html inside `<body>` section
+```html
+    <button class="toggle-dict-btn">
+      <img src="assets/svg/comment-slash.svg" class="dictIcon" alt="Toggle Dictionary">
+      Toggle Dictionary
+    </button>
+```
+6. JavaScript should be applied after the Pali text, e.g., at the end of the </body> section. You can modify connection url or desired endpoint in this file:
+   ```
    <script src="assets/js/paliLookup.js"></script>
+   </body>
+   </html>
+   ```
+   
 
