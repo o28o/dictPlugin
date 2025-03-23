@@ -51,7 +51,7 @@ To make Pali text clickable:
 
 
 1.  Clone repo 
-2.  The Pali text should be marked with class="pli-lang" e.g. `<span class="pli-lang">Pali text</span>` or \<p\> or <div>.
+2.  The Pali text should be marked with class="pli-lang" e.g. `<span class="pli-lang">Pali text</span>` or \<p\> or \<div\>.
    
 3. Styles should be applied in the `<head>` section:
    ```html
