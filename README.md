@@ -7,7 +7,7 @@ For those who want to click the word and get the translation of the prefered Onl
 
 List of sites and apps that have built-in Pali Dictionary:
 
-- [Dhamma Gift](https://dhamma.gift/read.php)  
+- [Dhamma Gift](https://dhamma.gift/read.php) 
 - [Digital Pali Reader](https://digiralpalireader.online/)  
 - [The Buddha’s Words](https://thebuddhaswords.net/)  
 - [SuttaCentral](https://suttacentral.net/)  
@@ -21,13 +21,13 @@ There are another ways to add Pali Lookup for literally any site:
     <img src="https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe" alt="Microsoft Edge extension" width="50">
 </a> 
 
-[Microsoft Edge extention](https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj)
+[Microsoft Edge extention](https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj) Not customizable
 
 <a href="https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md">
     <img src="https://github.com/user-attachments/assets/e20515b1-0061-4af7-8689-95a818ff1932" alt="TamperMonkey Script" width="50">
 </a> 
 
-[TamperMonkey User Script](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md)
+[TamperMonkey User Script](https://github.com/o28o/dictPlugin/blob/main/ExtentionMethod.md) Customizable
 
 ## for Webmasters (requires adding js and css to the site code): 
 Simple yet very convenient Pali Lookup Dictionary for any site.
