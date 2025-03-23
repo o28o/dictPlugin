@@ -2,6 +2,18 @@
 
 For those who want to click the word and get the translation of the prefered Online dictionary. It's made for Pali Language, but can be customized to any Language or any Online Dictionary that supports word lookup in the URL parameters like this: https://somedict.online/?word=dukkha (GET parameters)
 
+## for End Users (easiest way):
+**May be you can just read on these sites, they have Pali lookup already
+**
+
+List of sites and apps that have built-in Pali Dictionary:
+https://dhamma.gift/sc/
+https://digiralpalireader.online/
+https://thebuddhaswords.net/
+https://suttacentral.net/
+https://tipitaka.app
+tipitaka pali reader android ios app
+
 ## for End Users (requires installing browser extention and setup):
 There are another ways to add Pali Lookup for literally any site:
 
