@@ -2,7 +2,7 @@
 
 For those who want to click the word and get the translation of the prefered Online dictionary. It's made for Pali Language using Digital Pali Dictionary (DPD), but can be customized to any Language or any Online Dictionary that supports word lookup in the URL parameters like this: https://somedict.online/?word=dukkha (GET parameters)
 
-## for End Users (easiest way):
+## for End Users (site list):
 **May be you don't need to do anything and can just read on these sites, they have Pali lookup already**
 
 List of sites and apps that have built-in Pali Dictionary:
