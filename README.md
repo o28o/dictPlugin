@@ -17,6 +17,8 @@ List of sites and apps that have built-in Pali Dictionary:
 ## for End Users (requires installing browser extention and setup):
 There are another ways to add Pali Lookup for literally any site:
 
+![Описание изображения](https://github.com/o28o/dictPlugin/blob/05cd3024e0642520e46d07e287a6b686e8032068/assets/chrome-store.jpg?raw=true)
+
 <a href="https://chromewebstore.google.com/detail/dhammagift-search-and-wor/dnnogjdcmhbiobpnkhdbfnfjnjlikabd">
     <img src="https://github.com/user-attachments/assets/7a378ce4-cedf-4d98-adcf-a0a8e4a729fe" alt="Google Chrome extension" width="50">
 </a> 
