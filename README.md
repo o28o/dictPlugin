@@ -14,7 +14,7 @@ List of sites and apps that have built-in Pali Dictionary:
 - [Tipitaka.app](https://tipitaka.app)  
 - Tipitaka Pali Reader (Android, iOS)
 
-## for End Users (requires installing browser extention and setup):
+## for End Users (requires installing browser extention or/and setup):
 There are another ways to add Pali Lookup for literally any site:
 
 <a href="https://chromewebstore.google.com/detail/dhammagift-search-and-wor/dnnogjdcmhbiobpnkhdbfnfjnjlikabd">
