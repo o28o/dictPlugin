@@ -31,6 +31,7 @@
         popup.style.left = '50%';
         popup.style.width = '80%';
         popup.style.maxWidth = '600px';
+  popup.style.maxHeight = '600px';
         popup.style.height = '80%';
         popup.style.transform = 'translate(-50%, -50%)';
         popup.style.background = 'white';
