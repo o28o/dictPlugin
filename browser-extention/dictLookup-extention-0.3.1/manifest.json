@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Dhamma.gift Search and Word Lookup",
-  "version": "0.3",
+  "version": "0.3.1",
   "description": "Search any word in Suttas - powered by Dhamma.gift and Lookup word Pali translation - powered by DPD",
   "permissions": [
     "storage",
     "activeTab",
-    "scripting",
-    "tabs"
+    "scripting"
   ],
   "host_permissions": [
     "https://dict.dhamma.gift/*",

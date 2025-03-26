@@ -89,7 +89,7 @@
 
         // Iframe to display search results
         const iframe = document.createElement('iframe');
-        iframe.sandbox = ''; // Restrict iframe capabilities for security
+        iframe.sandbox = 'allow-scripts'; // Restrict iframe capabilities for security
         iframe.style.height = '100%';
         iframe.style.width = '100%';
         iframe.style.border = 'none';
@@ -100,7 +100,7 @@
         dragHandle.style.top = '0';
         dragHandle.style.left = '0';
         dragHandle.style.width = '100%';
-        dragHandle.style.height = '5px';
+        dragHandle.style.height = '10px';
         dragHandle.style.background = '#f0f0f0';
         dragHandle.style.cursor = 'move';
 
