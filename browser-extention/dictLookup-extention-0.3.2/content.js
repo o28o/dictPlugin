@@ -4,7 +4,7 @@
     // URLs and parameters for Pali Search and Lookup
     const dhammaGiftURL = 'https://dhamma.gift/?q='; // Base URL for Pali Search
     const dgParams = '&p=-kn'; // Additional parameters for Pali Search
-    const dpdlang = 'https://dict.dhamma.gift/gd?search='; // URL for Pali Lookup
+    const dpdlang = 'https://dpdict.net/gd?search='; // URL for Pali Lookup
     const storageKey = 'dictPopupSize'; // Key for storing popup size in localStorage
 
     let isEnabled = true; // Flag to track if the extension is enabled
@@ -31,6 +31,7 @@
         popup.style.left = '50%';
         popup.style.width = '80%';
         popup.style.maxWidth = '600px';
+  popup.style.maxHeight = '600px';
         popup.style.height = '80%';
         popup.style.transform = 'translate(-50%, -50%)';
         popup.style.background = 'white';
@@ -88,50 +89,119 @@
 
         // Iframe to display search results
         const iframe = document.createElement('iframe');
-        iframe.sandbox = ''; // Restrict iframe capabilities for security
+        iframe.sandbox = 'allow-scripts'; // Restrict iframe capabilities for security
         iframe.style.height = '100%';
         iframe.style.width = '100%';
         iframe.style.border = 'none';
+        iframe.style.overflow = 'hidden';
 
         // Drag handle for moving the popup
-        const dragHandle = document.createElement('div');
-        dragHandle.style.position = 'absolute';
-        dragHandle.style.top = '0';
-        dragHandle.style.left = '0';
-        dragHandle.style.width = '100%';
-        dragHandle.style.height = '5px';
-        dragHandle.style.background = '#f0f0f0';
-        dragHandle.style.cursor = 'move';
+    // Создаем треугольник для ресайза
+    const resizeHandle = document.createElement('div');
+    resizeHandle.classList.add('resize-handle');
+    resizeHandle.style.position = 'absolute';
+    resizeHandle.style.right = '0';
+    resizeHandle.style.bottom = '0';
+    resizeHandle.style.width = '20px';
+    resizeHandle.style.height = '20px';
+    resizeHandle.style.cursor = 'nwse-resize';
+    resizeHandle.style.zIndex = '10';
+    
+    // Создаем треугольник с помощью CSS
+    resizeHandle.innerHTML = `
+        <style>
+            .resize-handle::after {
+                content: "";
+                position: absolute;
+                right: 3px;
+                bottom: 3px;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 12px 12px;
+                border-color: transparent transparent #666 transparent;
+            }
+        </style>
+    `;
+
+    const header = document.createElement('div');
+    header.classList.add('popup-header');
+    header.style.cursor = 'move';
+    header.style.height = '10px';
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.padding = '0 10px';
+    header.textContent = '';
 
         // Append elements to the popup and document body
-        popup.appendChild(dragHandle);
+        popup.appendChild(header);
         popup.appendChild(closeBtn);
         popup.appendChild(openBtn);
         popup.appendChild(iframe);
+        popup.appendChild(resizeHandle);
+
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
 
-        // Dragging functionality for the popup
-        let isDragging = false;
-        let offsetX, offsetY;
+    // Перетаскивание окна
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+    let isFirstDrag = localStorage.getItem('isFirstDrag') === 'false' ? false : true;
 
-        dragHandle.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            offsetX = e.clientX - popup.getBoundingClientRect().left;
-            offsetY = e.clientY - popup.getBoundingClientRect().top;
-        });
+    if (isFirstDrag) {
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.width = '80%';
+        popup.style.maxWidth = '600px';
+        popup.style.height = '80%';
+        popup.style.transform = 'translate(-50%, -50%)';
+    }
 
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                popup.style.left = `${e.clientX - offsetX}px`;
-                popup.style.top = `${e.clientY - offsetY}px`;
-                popup.style.transform = 'none';
-            }
-        });
+    // Обработчик нажатия для мыши (десктоп)
+    function startDrag(e) {
+        isDragging = true;
+        
+        // Добавить этот блок для первого перемещения
+        if (isFirstDrag) {
+            const rect = popup.getBoundingClientRect();
+            popup.style.transform = 'none';  // убираем transform, который центрирует окно
+            popup.style.top = rect.top + 'px';
+            popup.style.left = rect.left + 'px';
+            isFirstDrag = false;
+            // Сохраняем состояние isFirstDrag в sessionStorage
+            localStorage.setItem('isFirstDrag', isFirstDrag);
+        }  
+        
+        startX = e.clientX || e.touches[0].clientX;
+        startY = e.clientY || e.touches[0].clientY;
+        initialLeft = parseInt(popup.style.left || 0, 10);
+        initialTop = parseInt(popup.style.top || 0, 10);
+        e.preventDefault();
+    }
 
-        document.addEventListener('mouseup', () => {
+    function moveDrag(e) {
+        if (isDragging) {
+            const deltaX = (e.clientX || e.touches[0].clientX) - startX;
+            const deltaY = (e.clientY || e.touches[0].clientY) - startY;
+            popup.style.left = `${initialLeft + deltaX}px`;
+            popup.style.top = `${initialTop + deltaY}px`;
+        }
+    }
+
+    function stopDrag() {
+        if (isDragging) {
             isDragging = false;
-        });
+            savePopupState();
+        }
+    }
+
+    // Обработчики для перетаскивания
+    header.addEventListener('mousedown', startDrag);
+    document.addEventListener('mousemove', moveDrag);
+    document.addEventListener('mouseup', stopDrag);
+    header.addEventListener('touchstart', startDrag);
+    document.addEventListener('touchmove', moveDrag);
+    document.addEventListener('touchend', stopDrag);
 
         // Function to close the popup
         function closePopup(event) {
@@ -173,10 +243,55 @@
             localStorage.removeItem(storageKey);
         }
 
-        // Observe popup size changes and save them
-        const resizeObserver = new ResizeObserver(saveSize);
-        resizeObserver.observe(popup);
-        window.addEventListener('resize', resetSize);
+    // Реализация ресайза с помощью треугольника
+    let isResizing = false;
+    let startWidth, startHeight, startResizeX, startResizeY;
+
+    resizeHandle.addEventListener('mousedown', startResize);
+    resizeHandle.addEventListener('touchstart', startResize);
+
+    function startResize(e) {
+        isResizing = true;
+        startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+        startResizeX = e.clientX || e.touches[0].clientX;
+        startResizeY = e.clientY || e.touches[0].clientY;
+        
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function doResize(e) {
+        if (!isResizing) return;
+        
+        const currentX = e.clientX || e.touches[0].clientX;
+        const currentY = e.clientY || e.touches[0].clientY;
+        
+        const newWidth = startWidth + (currentX - startResizeX);
+        const newHeight = startHeight + (currentY - startResizeY);
+        
+        // Ограничения по минимальному и максимальному размеру
+        const minWidth = 200;
+        const minHeight = 150;
+        const maxWidth = window.innerWidth * 0.9;
+        const maxHeight = window.innerHeight * 0.9;
+        
+        popup.style.width = Math.max(minWidth, Math.min(newWidth, maxWidth)) + 'px';
+        popup.style.height = Math.max(minHeight, Math.min(newHeight, maxHeight)) + 'px';
+        
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function stopResize() {
+        isResizing = false;
+        savePopupState();
+    }
+
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('touchmove', doResize);
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchend', stopResize);
         loadSize();
 
         return { overlay, popup, iframe, openBtn };
@@ -227,16 +342,18 @@
         }
     }
 
-    // Initialize extension state from Chrome storage
-    chrome.storage.local.get(['isEnabled'], (result) => {
+    const browserAPI = window.chrome || window.browser; // Universal check for Chrome and Edge
+
+    // Initialize extension state
+    browserAPI.storage.local.get(['isEnabled'], (result) => {
         isEnabled = result.isEnabled !== undefined ? result.isEnabled : true;
         if (isEnabled) {
             document.addEventListener('click', handleClick);
         }
     });
 
-    // Listen for changes in extension state
-    chrome.storage.onChanged.addListener((changes, namespace) => {
+    // Listener for storage changes
+    browserAPI.storage.onChanged.addListener((changes, namespace) => {
         if (changes.isEnabled) {
             isEnabled = changes.isEnabled.newValue;
             if (isEnabled) {
@@ -248,4 +365,5 @@
             }
         }
     });
+
 })();

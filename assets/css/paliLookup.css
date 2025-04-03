@@ -1,70 +1,84 @@
-/* Styles for regular text */
+/* Стили для обычного текста */
 .pli-lang {
   cursor: text; 
   color: inherit; 
 }
 
-/* Styles for popup */
+/* Стили для popup */
 .popup {
-/*  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
-  */
-  background: white; 
+  background: #E1EBED; /* Светлый фон */
   border: 2px solid #666;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 100000;
   display: none;
+  color: #05031B; /* Текст на светлом фоне */
 }
 
-/* Dark mode styles for popup */
-.popup.dark {
-  background: black; /* Black background for dark mode */
-  color: white;      /* White text */
-  border-color: #666; /* Darker border */
+/* Темный режим для popup */
+.popup.dark,
+[data-theme="dark"] .popup {
+  background: #07021D; /* Тёмный фон */
+  color: #E1EAED; /* Текст на тёмном фоне */
+  border-color: #666;
 }
 
-[data-theme="dark"] .popup iframe {
-  background: black;
-}
-
+/* Для iframe */
 .popup iframe {
   width: 100%;
   height: 100%;
   border: none;
   z-index: 10000;
+  background: #E1EBED; /* Светлый фон */
+  color: #05031B; /* Текст на светлом фоне */
 }
 
-.popup.dark  {
-  background: black;
+[data-theme="dark"] .popup iframe,
+.popup.dark iframe {
+  background: #07021D; /* Тёмный фон */
+  color: #E1EAED; /* Текст на тёмном фоне */
+}
+
+/* Для содержимого popup */
+.popup * {
+  color: inherit;
 }
 
 .popup-header {
-  background = '#f1f1f1';
-}
-  
-[data-theme="dark"] .popup-header {
-  background: black;
+  background: #E1EBED; /* Светлый фон */
+  color: #05031B; /* Текст на светлом фоне */
 }
 
-.popup-header.dark {
-  background = black;
+.popup-header.dark,
+[data-theme="dark"] .popup-header {
+  background: #07021D; /* Тёмный фон */
+  color: #E1EAED; /* Текст на тёмном фоне */
+}
+
+.popupSandalone {
+  background: #E1EBED; /* Светлый фон */
+  color: #05031B; /* Текст на светлом фоне */
+}
+
+[data-theme="dark"] .popupSandalone,
+.popupSandalone.dark {
+  background: #07021D; /* Тёмный фон */
+  color: #E1EAED; /* Текст на тёмном фоне */
 }
 
 .popup .close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #CE0520;
-  color: #e1dede;
+ /* background: #CE0520;
+  color: #e1dede;*/
+
+  background: rgba(206, 5, 32, 0.6); /* Красный с 80% непрозрачности */
+  color: rgba(225, 222, 222, 0.7); /* Светлый серый с 90% непрозрачности */
   border: none;
   height: 30px;
   width: 30px;
   cursor: pointer;
-  border-radius: 100%; /* Makes the button circular */
+  border-radius: 100%;
 }
 
 .overlay {
@@ -78,14 +92,15 @@
   display: none;
 }
 
+/* Остальные стили остаются без изменений */
 .common-size-icon4 {
   height: 25px; 
   width: 22px;
 }
 
 .dictIcon {
-  height: 15px; 
-  width: 15px;
+  height:15px; 
+  width:15px;
 }
 
 .dictIcon-sitePages {
@@ -93,19 +108,16 @@
   width: 35px;
 }
 
-/* Base style for the icon */
 .toggle-dict-btn img {
   width: 24px;
   height: 24px;
 }
 
-/* For a specific container */
 .container-fluid .toggle-dict-btn img {
   width: 20px;
   height: 20px;
 }
 
-/* Using an attribute */
 img[data-size="small"] {
   width: 16px;
   height: 16px;
@@ -116,12 +128,48 @@ img[data-size="large"] {
   height: 48px;
 }
 
-/* 
-<button class="btn btn-light mb-1 toggle-dict-btn" type="button">
-  <img src="/assets/svg/comment.svg" data-size="small">
-</button>
 
-<button class="btn btn-light mb-1 toggle-dict-btn" type="button">
-  <img src="/assets/svg/comment.svg" data-size="large">
-</button>
-*/
+        ::-webkit-scrollbar {
+        background: #E1EBED; /* Светлый фон */
+        }
+
+        ::-webkit-scrollbar-thumb {
+       background: #E1EBED; /* Светлый фон */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #E1EBED; /* Более тёмный скроллбар при наведении */
+        }
+
+        /* Темная тема */
+        [data-theme="dark"] ::-webkit-scrollbar {
+          background: #07021D; /* Темный фон скроллбара */
+        }
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+          background: #07021D; /* Светлый скроллбар для темной темы */
+        }
+        
+        
+                .resize-handle {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            cursor: nwse-resize;
+            z-index: 10;
+        }
+        
+        .resize-handle::after {
+            content: "";
+            position: absolute;
+            right: 3px;
+            bottom: 3px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 12px 12px;
+            border-color: transparent transparent #666 transparent;
+        }
+        
