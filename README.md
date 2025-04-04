@@ -10,9 +10,10 @@ List of sites and apps that have built-in Pali Dictionary:
 - [Dhamma Gift](https://dhamma.gift/read.php) 
 - [Digital Pali Reader](https://digiralpalireader.online/)  
 - [The Buddha’s Words](https://thebuddhaswords.net/)  
-- [SuttaCentral](https://suttacentral.net/)  
-- [Tipitaka.app](https://tipitaka.app)  
+- [Tipitaka.app](https://tipitaka.app)
+- [Tipitaka Online](https://tipitakapali.org/)  
 - Tipitaka Pali Reader (Android, iOS)
+- [SuttaCentral](https://suttacentral.net/) 
 
 ## for End Users (requires installing browser extention or/and setup):
 There are another ways to add Pali Lookup for literally any site:
