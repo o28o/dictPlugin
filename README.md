@@ -8,7 +8,8 @@ For those who want to click the word and get the translation of the prefered Onl
 List of sites and apps that have built-in Pali Dictionary:
 
 - [Dhamma Gift](https://dhamma.gift/read.php) 
-- [Digital Pali Reader](https://digiralpalireader.online/) - [SuttaCentral](https://suttacentral.net/) 
+- [Digital Pali Reader](https://digiralpalireader.online/)
+- [SuttaCentral](https://suttacentral.net/) 
 - [The Buddha’s Words](https://thebuddhaswords.net/)  
 - [Tipitaka.app](https://tipitaka.app)
 - [Tipitaka Online](https://tipitakapali.org/)  
