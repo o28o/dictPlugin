@@ -1203,7 +1203,6 @@ let dpd_deconstructor = {
   "anuggaṇheyyāti": "anuggaṇheyya + iti<br>na + uggaṇheyya + iti<br>anuggaṇha + eyya + iti",
   "anuggahāyāti": "anuggahāya + iti<br>na + uggahāya + iti<br>anu + gahāya + iti",
   "anuggahetvā": "na + uggahetvā<br>anu + aggahetvā<br>anu + gahetvā",
-  "anuggahesi": "na + uggahesi<br>anuggahe + asi<br>anu + aggahesi<br>anu + gahe + asi",
   "anuggahessāmīti": "anuggahessāmi + iti<br>na + uggahessāmi + iti<br>anuggaha + essāmi + iti",
   "anucaṅkamantepi": "anucaṅkamante + api<br>anu + caṅkamante + api<br>anucaṅkamo + ante + api",
   "anucarantipi": "anucaranti + api<br>anu + caranti + api<br>anucaraṃ + iti + api",
