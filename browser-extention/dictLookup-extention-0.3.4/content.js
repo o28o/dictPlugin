@@ -4,7 +4,8 @@
     // URLs and parameters for Pali Search and Lookup
     const dhammaGiftURL = 'https://dhamma.gift/?q='; // Base URL for Pali Search
     const dgParams = '&p=-kn'; // Additional parameters for Pali Search
-    const dpdlang = 'https://dpdict.net/gd?search='; // URL for Pali Lookup
+    // const dpdlang = 'https://dpdict.net/gd?search='; // URL for Pali Lookup
+    const dpdlang = 'https://dict.dhamma.gift/search_html?q='; // URL for Pali Lookup
     const storageKey = 'dictPopupSize'; // Key for storing popup size in localStorage
     const dictDhammaGiftURL = 'https://dict.dhamma.gift/search_html?q='; // URL for full dictionary
 
@@ -211,7 +212,7 @@
 
         // Iframe to display search results
         const iframe = document.createElement('iframe');
-        iframe.sandbox = 'allow-scripts'; // Restrict iframe capabilities for security
+        iframe.sandbox = 'allow-scripts allow-same-origin allow-forms'; // Restrict iframe capabilities for security
         iframe.style.height = '100%';
         iframe.style.width = '100%';
         iframe.style.border = 'none';
