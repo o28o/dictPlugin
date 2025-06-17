@@ -4,10 +4,26 @@
     // URLs and parameters for Pali Search and Lookup
     const dhammaGiftURL = 'https://dhamma.gift/?q='; // Base URL for Pali Search
     const dgParams = '&p=-kn'; // Additional parameters for Pali Search
-    // const dpdlang = 'https://dpdict.net/gd?search='; // URL for Pali Lookup
-    const dpdlang = 'https://dict.dhamma.gift/search_html?q='; // URL for Pali Lookup
     const storageKey = 'dictPopupSize'; // Key for storing popup size in localStorage
-    const dictDhammaGiftURL = 'https://dict.dhamma.gift/search_html?q='; // URL for full dictionary
+    const dictUrlKey = 'dictUrl'; // Key for storing custom dictionary URL
+    
+    // Default URLs
+    const DEFAULT_DICT_URL = 'https://dict.dhamma.gift/search_html?q=';
+    let customDictUrl = DEFAULT_DICT_URL;
+
+    // Load saved dictionary URL
+    chrome.storage.sync.get([dictUrlKey], (result) => {
+        if (result[dictUrlKey]) {
+            customDictUrl = result[dictUrlKey];
+        }
+    });
+
+    // Listen for URL changes
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (changes[dictUrlKey]) {
+            customDictUrl = changes[dictUrlKey].newValue;
+        }
+    });
 
 
     let isEnabled = true; // Flag to track if the extension is enabled
@@ -212,7 +228,7 @@
 
         // Iframe to display search results
         const iframe = document.createElement('iframe');
-        iframe.sandbox = 'allow-scripts allow-same-origin allow-forms'; // Restrict iframe capabilities for security
+        // iframe.sandbox = 'allow-scripts allow-same-origin allow-forms'; // Restrict iframe capabilities for security
         iframe.style.height = '100%';
         iframe.style.width = '100%';
         iframe.style.border = 'none';
@@ -466,14 +482,17 @@
         const clickedWord = getWordUnderCursor(event);
         if (clickedWord) {
             const processedWord = processWord(clickedWord);
-           // console.log('Word:', processedWord);
-            const url = `${dpdlang}${encodeURIComponent(processedWord)}`; // Construct lookup URL
+            const url = `${customDictUrl}${encodeURIComponent(processedWord)}`; // Use custom URL
             iframe.src = url; // Load URL in iframe
             popup.style.display = 'block';
             overlay.style.display = 'block';
             openBtn.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`; // Set open button URL
-			dictBtn.href = `${dictDhammaGiftURL}${encodeURIComponent(processedWord)}`; // Set dictionary button URL
-
+            
+            // Update dictBtn href based on custom URL
+            chrome.storage.sync.get(['dictUrl'], (result) => {
+                const dictUrl = result.dictUrl || DEFAULT_DICT_URL;
+                dictBtn.href = `${dictUrl}${encodeURIComponent(processedWord)}`;
+            });
         }
     }
 
