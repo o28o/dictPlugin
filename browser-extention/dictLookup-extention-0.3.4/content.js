@@ -362,7 +362,7 @@
         localStorage.setItem('popupHeight', popup.style.height);
         localStorage.setItem('popupTop', popup.style.top);
         localStorage.setItem('popupLeft', popup.style.left);
-        console.log('savedstates');
+       // console.log('savedstates');
     }
 
         // Reset popup size to default
@@ -466,7 +466,7 @@
         const clickedWord = getWordUnderCursor(event);
         if (clickedWord) {
             const processedWord = processWord(clickedWord);
-            console.log('Word:', processedWord);
+           // console.log('Word:', processedWord);
             const url = `${dpdlang}${encodeURIComponent(processedWord)}`; // Construct lookup URL
             iframe.src = url; // Load URL in iframe
             popup.style.display = 'block';
