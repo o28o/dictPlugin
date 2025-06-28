@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Dhamma.gift Search and Word Lookup",
+  "version": "0.3.8",
+  "description": "Search any word in Suttas - powered by Dhamma.gift and Lookup word Pali translation - powered by DPD",
+  "permissions": [
+    "storage",
+    "activeTab",
+     "contextMenus",
+    "scripting"
+      ],
+  "host_permissions": [
+    "https://dict.dhamma.gift/*",
+    "https://dhamma.gift/*",
+    "https://dpdict.net/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; frame-src https://dict.dhamma.gift; "
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon-16x16.png",    
+      "32": "icon-32x32.png",
+      "48": "icon-48x48.png",
+      "128": "icon-128x128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "commands": {
+    "toggle_extension": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Toggle the extension on/off"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon-32x32.png",
+    "32": "icon-32x32.png",
+    "48": "icon-48x48.png",
+    "128": "icon-128x128.png"
+  }
+}

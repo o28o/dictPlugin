@@ -9,6 +9,64 @@ browserAPI.storage.local.get(['isEnabled'], (result) => {
   updateIcon();
 });
 
+// Добавляем создание контекстных меню при установке/обновлении расширения
+browserAPI.runtime.onInstalled.addListener(() => {
+  // Удаляем все существующие меню, чтобы избежать дублирования при обновлении
+  browserAPI.contextMenus.removeAll(() => {
+    browserAPI.contextMenus.create({
+      id: "openDhammaGiftMain",
+      title: "Dhamma.gift",
+      contexts: ["action"] // 'action' для меню кнопки расширения
+    });
+
+    browserAPI.contextMenus.create({
+      id: "openDict",
+      title: "Dict.Dhamma.Gift",
+      contexts: ["action"]
+    });
+
+    browserAPI.contextMenus.create({
+      id: "openAkshara",
+      title: "Aksharamukha.com",
+      contexts: ["action"]
+    });
+
+    browserAPI.contextMenus.create({
+      id: "openMitra",
+      title: "DharmaMitra.org",
+      contexts: ["action"]
+    });
+
+    // Добавьте сюда любые другие пункты меню
+    // browserAPI.contextMenus.create({
+    //   id: "myCustomSite",
+    //   title: "Мой Пользовательский Сайт",
+    //   contexts: ["action"]
+    // });
+  });
+});
+
+// Обработчик клика по пунктам контекстного меню
+browserAPI.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "openDhammaGiftMain") {
+    browserAPI.tabs.create({ url: "https://dhamma.gift/" });
+  } else if (info.menuItemId === "openDict") {
+    browserAPI.tabs.create({ url: "https://dict.dhamma.gift/" });
+  } else if (info.menuItemId === "openAkshara") {
+    browserAPI.tabs.create({ url: "https://www.aksharamukha.com/converter" });
+  } else if (info.menuItemId === "openMitra") {
+    browserAPI.tabs.create({ url: "https://dharmamitra.org/?target_lang=english-explained" });
+  }
+
+  // Обработка кликов для других пользовательских сайтов
+  // else if (info.menuItemId === "myCustomSite") {
+  //   browserAPI.tabs.create({ url: "https://www.example.com/my-custom-site" });
+  // }
+});
+
+
+
+
 // Обработчик клика по значку расширения
 browserAPI.action.onClicked.addListener((tab) => {
   isEnabled = !isEnabled;

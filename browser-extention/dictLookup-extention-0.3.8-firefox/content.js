@@ -1,5 +1,9 @@
-(function() {
+// content.js
+(async function() { // Make the IIFE async to use await
     'use strict';
+
+    // 1. Cross-browser API helper
+    const browserApi = typeof browser !== 'undefined' ? browser : chrome;
 
     // URLs and parameters for Pali Search and Lookup
     const dhammaGiftURL = 'https://dhamma.gift/?q='; // Base URL for Pali Search
@@ -9,19 +13,28 @@
     
     // Default URLs
     const DEFAULT_DICT_URL = 'https://dict.dhamma.gift/search_html?q=';
-    let customDictUrl = DEFAULT_DICT_URL;
+    let customDictUrl = DEFAULT_DICT_URL; // Initialize with default value
 
-    // Load saved dictionary URL
-    chrome.storage.sync.get([dictUrlKey], (result) => {
-        if (result[dictUrlKey]) {
+    // 2. Load saved dictionary URL using await
+    // This ensures customDictUrl is loaded before any dependent code runs
+    try {
+        const result = await browserApi.storage.sync.get(dictUrlKey);
+        if (result && result[dictUrlKey]) {
             customDictUrl = result[dictUrlKey];
+            console.log("Loaded customDictUrl from storage (initial):", customDictUrl);
+        } else {
+            console.log("No customDictUrl found in storage (initial), using default:", customDictUrl);
         }
-    });
+    } catch (error) {
+        console.error("Error loading customDictUrl from storage (initial):", error);
+    }
 
     // Listen for URL changes
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (changes[dictUrlKey]) {
+    // This can remain as a listener, as it updates customDictUrl when a change occurs later
+    browserApi.storage.onChanged.addListener((changes, namespace) => {
+        if (changes[dictUrlKey] && namespace === 'sync') { // Ensure it's sync storage
             customDictUrl = changes[dictUrlKey].newValue;
+            console.log("customDictUrl updated via storage listener:", customDictUrl);
         }
     });
 
@@ -139,6 +152,8 @@
         dictBtnExt.target = '_blank'; // Open link in a new tab
         dictBtnExt.title = 'Open in DPD full mode';
         
+        // **SVG icon for dictionary button (assuming it will be handled externally or via CSS background-image)**
+        // Or if you want to include a simpler SVG string directly (without XML declaration):
         // SVG icon for dictionary button
               dictBtnExt.innerHTML = `
             <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -232,10 +247,7 @@
          id="path1531"
          style="fill:#00121a;fill-opacity:1" /></g></g></svg>
 
-        `;      
-        
-        
-
+        `;     
         // iframeExt to display search results
         const iframeExt = document.createElement('iframe');
         iframeExt.style.height = '100%';
@@ -429,9 +441,11 @@
         
         loadSizeExt();
 
+        // 6. Return values from createPopupExt for use in the main IIFE scope
         return { overlayExt, popupExt, iframeExt, openBtnExt, dictBtnExt };
     }
 
+    // 7. Call createPopupExt after customDictUrl is potentially loaded
     const { overlayExt, popupExt, iframeExt, openBtnExt, dictBtnExt } = createPopupExt();
 
     // Function to process and clean up the word
@@ -462,7 +476,7 @@
     }
 
     // Function to show translation for a given word
-    function showTranslation(word) {
+    async function showTranslation(word) { // Make this function async
         const processedWord = processWordExt(word);
         const url = `${customDictUrl}${encodeURIComponent(processedWord)}`;
         iframeExt.src = url;
@@ -470,11 +484,15 @@
         overlayExt.style.display = 'block';
         openBtnExt.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`;
         
-        // Update dictBtnExt href based on custom URL
-        chrome.storage.sync.get(['dictUrl'], (result) => {
-            const dictUrl = result.dictUrl || DEFAULT_DICT_URL;
+        // 8. Update dictBtnExt href based on custom URL (now awaits for consistency)
+        try {
+            const result = await browserApi.storage.sync.get(dictUrlKey);
+            const dictUrl = result[dictUrlKey] || DEFAULT_DICT_URL; // Use the loaded value or default
             dictBtnExt.href = `${dictUrl}${encodeURIComponent(processedWord)}`;
-        });
+        } catch (error) {
+            console.error("Error updating dictBtnExt href:", error);
+            dictBtnExt.href = `${DEFAULT_DICT_URL}${encodeURIComponent(processedWord)}`; // Fallback to default
+        }
     }
 
     // Function to handle click events and display search results
@@ -496,28 +514,33 @@
         }
     }
 
-    const browserAPI = window.chrome || window.browser;
-
-    // Initialize extension state
-    browserAPI.storage.local.get(['isEnabled'], (result) => {
+    // Initialize extension state (using browserApi)
+    // This can remain as a callback because it's handling initial state,
+    // but can also be awaited if subsequent code depends on `isEnabled`
+    browserApi.storage.local.get(['isEnabled'], (result) => {
         isEnabled = result.isEnabled !== undefined ? result.isEnabled : true;
         if (isEnabled) {
             document.addEventListener('click', handleClickExt);
+            console.log("Extension enabled, click listener added.");
+        } else {
+            console.log("Extension disabled on load.");
         }
     });
 
-    // Listener for storage changes
-    browserAPI.storage.onChanged.addListener((changes, namespace) => {
-        if (changes.isEnabled) {
+    // Listener for storage changes (using browserApi)
+    browserApi.storage.onChanged.addListener((changes, namespace) => {
+        if (changes.isEnabled && namespace === 'local') { // Ensure it's local storage
             isEnabled = changes.isEnabled.newValue;
             if (isEnabled) {
                 document.addEventListener('click', handleClickExt);
+                console.log("Extension enabled via storage change.");
             } else {
                 document.removeEventListener('click', handleClickExt);
                 popupExt.style.display = 'none';
                 overlayExt.style.display = 'none';
+                console.log("Extension disabled via storage change.");
             }
         }
     });
 
-})();
+})(); // End of async IIFE
