@@ -48,6 +48,13 @@
         button:hover {
             background-color: #45a049;
         }
+        #reset {
+            background-color: #f44336;
+            margin-right: 10px;
+        }
+        #reset:hover {
+            background-color: #d32f2f;
+        }
         #status {
             margin-top: 20px;
             padding: 15px;
@@ -78,6 +85,7 @@
     <p>
         Option below sets the <strong>default</strong> translation language. If you just want to switch the language temporarily, use the <strong>en/ru button<strong> on the page.
     </p>
+    
     <div class="form-group">
         <label for="urlPreset">Select Dictionary URL:</label>
         <select id="urlPreset">
@@ -93,10 +101,12 @@
             <label for="customUrl">Enter Custom URL:</label>
             <input type="text" id="customUrl" value="https://dict.dhamma.gift/ru/search_html?q=" placeholder="https://dict.dhamma.gift/ru/search_html?q=">
         </div>
+
         <div id="status"></div>
 
     </div>
 
+    <button id="reset">Reset to Defaults</button>
     <button id="save">Save Settings</button>
 
     <script src="options.js"></script>

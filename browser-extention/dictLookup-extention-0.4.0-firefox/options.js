@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const customUrlContainer = document.getElementById('customUrlContainer');
     const customUrl = document.getElementById('customUrl');
     const saveButton = document.getElementById('save');
+    const resetButton = document.getElementById('reset');
     const status = document.getElementById('status');
     
     // Показываем/скрываем поле для кастомного URL
@@ -38,6 +39,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Сохраняем в chrome.storage
         chrome.storage.sync.set({ dictUrl: selectedUrl }, function() {
             showStatus('Settings saved!', 'success');
+        });
+    });
+
+    // Сброс настроек
+    resetButton.addEventListener('click', function() {
+        // Удаляем URL из sync storage
+        chrome.storage.sync.remove('dictUrl', function() {
+            // Устанавливаем флаг для сброса попапа в content script
+            chrome.storage.local.set({ 'popup_reset_flag': true });
+
+            // Отправляем сообщение в background.js для сброса состояния
+            chrome.runtime.sendMessage({ action: 'reset_extension_state' });
+            
+            // Сбрасываем UI
+            urlPreset.selectedIndex = 0;
+            customUrlContainer.style.display = 'none';
+            customUrl.value = '';
+            
+            showStatus('Settings reset. Please reload the page you were reading.', 'success');
         });
     });
     

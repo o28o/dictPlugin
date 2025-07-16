@@ -21,10 +21,9 @@
     "https://dhamma.gift/*",
     "https://dpdict.net/*"
   ],
-"content_security_policy": {
-  "extension_pages": "script-src 'self'; object-src 'none'; frame-src 'self' https://dict.dhamma.gift;",
-  "sandbox": "sandbox allow-scripts; child-src https://dict.dhamma.gift;"
-},  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; frame-src https://dict.dhamma.gift; "
+  },
   "background": {
     "scripts": ["background.js"]
   },
@@ -60,5 +59,11 @@
     "32": "icon-32x32.png",
     "48": "icon-48x48.png",
     "128": "icon-128x128.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "dpd-logo-dark.svg" ],
+      "matches": [ "*://*/*" ]
+    }
+  ]
 }

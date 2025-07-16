@@ -36,13 +36,6 @@ browserAPI.runtime.onInstalled.addListener(() => {
       title: "DharmaMitra.org",
       contexts: ["action"]
     });
-
-    // Добавьте сюда любые другие пункты меню
-    // browserAPI.contextMenus.create({
-    //   id: "myCustomSite",
-    //   title: "Мой Пользовательский Сайт",
-    //   contexts: ["action"]
-    // });
   });
 });
 
@@ -57,14 +50,7 @@ browserAPI.contextMenus.onClicked.addListener((info, tab) => {
   } else if (info.menuItemId === "openMitra") {
     browserAPI.tabs.create({ url: "https://dharmamitra.org/?target_lang=english-explained" });
   }
-
-  // Обработка кликов для других пользовательских сайтов
-  // else if (info.menuItemId === "myCustomSite") {
-  //   browserAPI.tabs.create({ url: "https://www.example.com/my-custom-site" });
-  // }
 });
-
-
 
 
 // Обработчик клика по значку расширения
@@ -72,6 +58,15 @@ browserAPI.action.onClicked.addListener((tab) => {
   isEnabled = !isEnabled;
   browserAPI.storage.local.set({ isEnabled });
   updateExtensionState(tab);
+});
+
+// Обработчик сообщений (для сброса настроек)
+browserAPI.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'reset_extension_state') {
+        isEnabled = true; // Сброс состояния в памяти
+        browserAPI.storage.local.remove('isEnabled'); // Удаляем из хранилища
+        updateIcon(); // Обновляем иконку немедленно
+    }
 });
 
 // Обработчик горячей клавиши
