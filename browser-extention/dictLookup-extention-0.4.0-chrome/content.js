@@ -1,4 +1,50 @@
 // content.js
+// content.js
+(function() {
+    'use strict';
+    const scrollbarStyles = `
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #E1EBED;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B0C4DE;
+            border-radius: 6px;
+            border: 2px solid #E1EBED;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0b4ce;
+        }
+        [data-theme="dark"] ::-webkit-scrollbar, html.dark ::-webkit-scrollbar {
+            background: #07021D;
+        }
+        [data-theme="dark"] ::-webkit-scrollbar-thumb, html.dark ::-webkit-scrollbar-thumb {
+            background: #2D3E50;
+            border-color: #07021D;
+        }
+
+         .popupExt.dragging {
+        opacity: 0.9;
+        cursor: move;
+    }
+    
+    .popupExt.resizing {
+        opacity: 0.9;
+    }
+    
+    .popupExt.dragging iframe,
+    .popupExt.resizing iframe {
+        pointer-events: none;
+    }
+        
+    `;
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = scrollbarStyles;
+    document.head.appendChild(styleSheet);
+})();
+
+if (window.self === window.top) {
 (async function() { // Make the IIFE async to use await
     'use strict';
 
@@ -23,7 +69,7 @@ try {
         localStorage.removeItem('popupExtHeight');
         localStorage.removeItem('popupExtTop');
         localStorage.removeItem('popupExtLeft');
-        localStorage.removeItem('isFirstDrag');
+        localStorage.removeItem('isFirstDragExt');
         localStorage.removeItem(storageKey); // 'dictPopupSize'
         
         // Удаляем флаг, чтобы не сбрасывать снова
@@ -171,7 +217,7 @@ try {
         dictBtnExt.target = '_blank'; // Open link in a new tab
         dictBtnExt.title = 'Open in DPD full mode';
         
-    
+            
     // Создаем элемент img для иконки из файла
 const dictIconExt = document.createElement('img');
 // Получаем полный и безопасный URL к файлу внутри расширения
@@ -182,7 +228,7 @@ dictIconExt.style.height = '16px';
 
 // Добавляем иконку в кнопку
 dictBtnExt.appendChild(dictIconExt);
-
+          
         // iframeExt to display search results
         const iframeExt = document.createElement('iframe');
         iframeExt.style.height = '100%';
@@ -237,14 +283,13 @@ dictBtnExt.appendChild(dictIconExt);
 
         document.body.appendChild(overlayExt);
         document.body.appendChild(popupExt);
-        
-        // --- START: MODIFIED DRAG FUNCTIONALITY ---
-        
-        let isDragging = false;
-        let offsetX, offsetY;
-        let isFirstDrag = localStorage.getItem('isFirstDrag') === null;
 
-        if (isFirstDrag) {
+        // Drag functionality
+        let isDraggingExt = false;
+        let startX, startY, initialLeft, initialTop;
+        let isFirstDragExt = localStorage.getItem('isFirstDragExt') === 'false' ? false : true;
+
+        if (isFirstDragExt) {
             popupExt.style.top = '50%';
             popupExt.style.left = '50%';
             popupExt.style.width = '80%';
@@ -254,45 +299,39 @@ dictBtnExt.appendChild(dictIconExt);
         }
 
         function startDragExt(e) {
-            isDragging = true;
-            // If it's the first drag, convert transform-based centering to absolute pixel values
-            if (isFirstDrag) {
+            isDraggingExt = true;
+            
+            if (isFirstDragExt) {
                 const rect = popupExt.getBoundingClientRect();
                 popupExt.style.transform = 'none';
-                popupExt.style.top = `${rect.top}px`;
-                popupExt.style.left = `${rect.left}px`;
-                isFirstDrag = false;
-                localStorage.setItem('isFirstDrag', 'false');
-            }
+                popupExt.style.top = rect.top + 'px';
+                popupExt.style.left = rect.left + 'px';
+                isFirstDragExt = false;
+                localStorage.setItem('isFirstDragExt', isFirstDragExt);
+            }  
             
-            // Calculate the mouse cursor's offset from the popup's top-left corner
-            const rect = popupExt.getBoundingClientRect();
-            offsetX = (e.clientX || e.touches[0].clientX) - rect.left;
-            offsetY = (e.clientY || e.touches[0].clientY) - rect.top;
-            
-            // Prevent default actions like text selection
+            startX = e.clientX || e.touches[0].clientX;
+            startY = e.clientY || e.touches[0].clientY;
+            initialLeft = parseInt(popupExt.style.left || 0, 10);
+            initialTop = parseInt(popupExt.style.top || 0, 10);
             e.preventDefault();
         }
 
         function moveDragExt(e) {
-            if (isDragging) {
-                // Calculate the new position based on the cursor's movement and the initial offset
-                const newLeft = (e.clientX || e.touches[0].clientX) - offsetX;
-                const newTop = (e.clientY || e.touches[0].clientY) - offsetY;
-                popupExt.style.left = `${newLeft}px`;
-                popupExt.style.top = `${newTop}px`;
+            if (isDraggingExt) {
+                const deltaX = (e.clientX || e.touches[0].clientX) - startX;
+                const deltaY = (e.clientY || e.touches[0].clientY) - startY;
+                popupExt.style.left = `${initialLeft + deltaX}px`;
+                popupExt.style.top = `${initialTop + deltaY}px`;
             }
         }
 
         function stopDragExt() {
-            if (isDragging) {
-                isDragging = false;
-                // Save the popup's final position
+            if (isDraggingExt) {
+                isDraggingExt = false;
                 savePopupStateExt();
             }
         }
-        
-        // --- END: MODIFIED DRAG FUNCTIONALITY ---
 
         // Event listeners for dragging
         headerExt.addEventListener('mousedown', startDragExt);
@@ -333,14 +372,14 @@ dictBtnExt.appendChild(dictIconExt);
         }
 
         // Resize functionality
-        let isResizing = false;
+        let isResizingExt = false;
         let startWidth, startHeight, startResizeExtX, startResizeExtY;
 
         resizeHandleExt.addEventListener('mousedown', startResizeExt);
         resizeHandleExt.addEventListener('touchstart', startResizeExt);
 
         function startResizeExt(e) {
-            isResizing = true;
+            isResizingExt = true;
             startWidth = parseInt(document.defaultView.getComputedStyle(popupExt).width, 10);
             startHeight = parseInt(document.defaultView.getComputedStyle(popupExt).height, 10);
             startResizeExtX = e.clientX || e.touches[0].clientX;
@@ -351,7 +390,7 @@ dictBtnExt.appendChild(dictIconExt);
         }
 
         function doResizeExt(e) {
-            if (!isResizing) return;
+            if (!isResizingExt) return;
             
             const currentX = e.clientX || e.touches[0].clientX;
             const currentY = e.clientY || e.touches[0].clientY;
@@ -372,7 +411,7 @@ dictBtnExt.appendChild(dictIconExt);
         }
 
         function stopResizeExt() {
-            isResizing = false;
+            isResizingExt = false;
             savePopupStateExt();
         }
 
@@ -486,3 +525,4 @@ dictBtnExt.appendChild(dictIconExt);
     });
 
 })(); // End of async IIFE
+}
