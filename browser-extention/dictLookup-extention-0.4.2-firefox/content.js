@@ -1,5 +1,4 @@
 // content.js
-// content.js
 (function() {
     'use strict';
     const scrollbarStyles = `
@@ -69,7 +68,6 @@ try {
         localStorage.removeItem('popupExtHeight');
         localStorage.removeItem('popupExtTop');
         localStorage.removeItem('popupExtLeft');
-        localStorage.removeItem('isFirstDragExt');
         localStorage.removeItem(storageKey); // 'dictPopupSize'
         
         // Удаляем флаг, чтобы не сбрасывать снова
@@ -105,13 +103,65 @@ try {
 
     let isEnabled = true; // Flag to track if the extension is enabled
 
-    function savePopupStateExt() {
-        localStorage.setItem('popupExtWidth', popupExt.style.width);
-        localStorage.setItem('popupExtHeight', popupExt.style.height);
-        localStorage.setItem('popupExtTop', popupExt.style.top);
-        localStorage.setItem('popupExtLeft', popupExt.style.left);
-    }
+function setupPopupPositionControlExt() {
+    let lastWindowSize = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
 
+    // Главная функция контроля позиции
+    const controlPopupPosition = () => {
+        if (!popupExt) return;
+        
+        // Если попап видим - корректируем позицию
+        if (popupExt.style.display !== 'none') {
+            const rect = popupExt.getBoundingClientRect();
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+            let needsAdjustment = false;
+
+            // Проверка выхода за границы
+            if (rect.right > winWidth || rect.bottom > winHeight || rect.left < 0 || rect.top < 0) {
+                popupExt.style.left = `${Math.max(20, Math.min(winWidth - rect.width - 20, parseInt(popupExt.style.left)))}px`;
+                popupExt.style.top = `${Math.max(20, Math.min(winHeight - rect.height - 20, parseInt(popupExt.style.top)))}px`;
+                needsAdjustment = true;
+            }
+
+            // Если попап полностью невидим - центрируем
+            if (rect.right < 0 || rect.bottom < 0 || rect.left > winWidth || rect.top > winHeight) {
+                popupExt.style.top = '50%';
+                popupExt.style.left = '50%';
+                popupExt.style.transform = 'translate(-50%, -50%)';
+                needsAdjustment = true;
+            }
+
+            if (needsAdjustment) savePopupStateExt();
+        }
+        
+        // Всегда обновляем размеры окна
+        lastWindowSize = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    };
+
+    // Вешаем обработчики
+    window.addEventListener('resize', controlPopupPosition);
+    
+    // Перехватываем показ попапа
+    const originalShow = showTranslation;
+    showTranslation = function(...args) {
+        originalShow.apply(this, args);
+        setTimeout(controlPopupPosition, 10);
+    };
+}
+function savePopupStateExt() {
+    const rect = popupExt.getBoundingClientRect();
+    localStorage.setItem('popupExtTop', `${rect.top}px`);
+    localStorage.setItem('popupExtLeft', `${rect.left}px`);
+    localStorage.setItem('popupExtWidth', popupExt.style.width);
+    localStorage.setItem('popupExtHeight', popupExt.style.height);
+}
     function getSelectedText() {
         const selection = window.getSelection();
         return selection ? selection.toString().trim() : '';
@@ -141,13 +191,12 @@ try {
         popupExt.style.maxWidth = '600px';
         popupExt.style.maxHeight = '600px';
         popupExt.style.height = '80%';
-        popupExt.style.transform = 'translate(-50%, -50%)';
+        popupExt.style.transform = 'none';
         popupExt.style.background = 'white';
         popupExt.style.border = '2px solid #666';
         popupExt.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
         popupExt.style.zIndex = '100000';
         popupExt.style.display = 'none';
-        popupExt.style.resize = 'both'; // Allow resizing of the popupExt
         popupExt.style.overflow = 'hidden';
 
         // Close button for the popupExt
@@ -236,33 +285,30 @@ dictBtnExt.appendChild(dictIconExt);
         iframeExt.style.border = 'none';
         iframeExt.style.overflow = 'hidden';
 
-        // Drag handle for moving the popupExt
-        const resizeHandleExt = document.createElement('div');
-        resizeHandleExt.classList.add('resize-handleExt');
-        resizeHandleExt.style.position = 'absolute';
-        resizeHandleExt.style.right = '0';
-        resizeHandleExt.style.bottom = '0';
-        resizeHandleExt.style.width = '20px';
-        resizeHandleExt.style.height = '20px';
-        resizeHandleExt.style.cursor = 'nwse-resize';
-        resizeHandleExt.style.zIndex = '10';
-        
-        // Create triangle for resize handle
-        resizeHandleExt.innerHTML = `
-            <style>
-                .resize-handle::after {
-                    content: "";
-                    position: absolute;
-                    right: 3px;
-                    bottom: 3px;
-                    width: 0;
-                    height: 0;
-                    border-style: solid;
-                    border-width: 0 0 12px 12px;
-                    border-color: transparent transparent #666 transparent;
-                }
-            </style>
-        `;
+     const resizeHandleExt = document.createElement('div');
+    resizeHandleExt.classList.add('resize-handle');
+    resizeHandleExt.style.position = 'absolute';
+    resizeHandleExt.style.right = '0';
+    resizeHandleExt.style.bottom = '0';
+    resizeHandleExt.style.width = '20px';
+    resizeHandleExt.style.height = '20px';
+    resizeHandleExt.style.cursor = 'nwse-resize';
+    resizeHandleExt.style.zIndex = '10';
+    resizeHandleExt.innerHTML = `
+        <style>
+            .resize-handle::after {
+                content: "";
+                position: absolute;
+                right: 3px;
+                bottom: 3px;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 12px 12px;
+                border-color: transparent transparent #666 transparent;
+            }
+        </style>
+    `;
 
         const headerExt = document.createElement('div');
         headerExt.classList.add('popup-headerExt');
@@ -284,71 +330,145 @@ dictBtnExt.appendChild(dictIconExt);
         document.body.appendChild(overlayExt);
         document.body.appendChild(popupExt);
 
-        // Drag functionality
-        let isDraggingExt = false;
-        let startX, startY, initialLeft, initialTop;
-        let isFirstDragExt = localStorage.getItem('isFirstDragExt') === 'false' ? false : true;
+        // Состояния для управления событиями
+    let isDraggingExt = false;
+    let isResizingExt = false;
 
-        if (isFirstDragExt) {
-            popupExt.style.top = '50%';
-            popupExt.style.left = '50%';
-            popupExt.style.width = '80%';
-            popupExt.style.maxWidth = '600px';
-            popupExt.style.height = '80%';
-            popupExt.style.transform = 'translate(-50%, -50%)';
+    // Перетаскивание окна
+    let startX, startY, initialLeft, initialTop;
+    
+// Загружаем сохранённые координаты
+const savedTop = localStorage.getItem('popupExtTop');
+const savedLeft = localStorage.getItem('popupExtLeft');
+const savedWidth = localStorage.getItem('popupExtWidth');
+const savedHeight = localStorage.getItem('popupExtHeight');
+
+// Устанавливаем позицию и размер
+if (savedTop && savedLeft) {
+    popupExt.style.top = savedTop;
+    popupExt.style.left = savedLeft;
+} else {
+    // Если нет сохранённых данных — центрируем
+    popupExt.style.top = `${window.innerHeight / 2 - 300}px`;
+    popupExt.style.left = `${window.innerWidth / 2 - 375}px`;
+}
+
+if (savedWidth && savedHeight) {
+    popupExt.style.width = savedWidth;
+    popupExt.style.height = savedHeight;
+} else {
+    popupExt.style.width = '749px';
+    popupExt.style.height = '600px';
+}
+
+   function startDragExt(e) {
+    isDraggingExt = true;
+    iframeExt.style.pointerEvents = 'none';
+    popupExt.classList.add('dragging');
+    
+
+    
+    startX = e.clientX || e.touches[0].clientX;
+    startY = e.clientY || e.touches[0].clientY;
+    initialLeft = parseInt(popupExt.style.left || 0, 10);
+    initialTop = parseInt(popupExt.style.top || 0, 10);
+    e.preventDefault();
+}
+
+    function moveDragExt(e) {
+        if (isDraggingExt) {
+            const deltaX = (e.clientX || e.touches[0].clientX) - startX;
+            const deltaY = (e.clientY || e.touches[0].clientY) - startY;
+            popupExt.style.left = `${initialLeft + deltaX}px`;
+            popupExt.style.top = `${initialTop + deltaY}px`;
         }
+    }
 
-        function startDragExt(e) {
-            isDraggingExt = true;
-            
-            if (isFirstDragExt) {
-                const rect = popupExt.getBoundingClientRect();
-                popupExt.style.transform = 'none';
-                popupExt.style.top = rect.top + 'px';
-                popupExt.style.left = rect.left + 'px';
-                isFirstDragExt = false;
-                localStorage.setItem('isFirstDragExt', isFirstDragExt);
-            }  
-            
-            startX = e.clientX || e.touches[0].clientX;
-            startY = e.clientY || e.touches[0].clientY;
-            initialLeft = parseInt(popupExt.style.left || 0, 10);
-            initialTop = parseInt(popupExt.style.top || 0, 10);
-            e.preventDefault();
+    function stopDragExt() {
+        if (isDraggingExt) {
+            isDraggingExt = false;
+            iframeExt.style.pointerEvents = 'auto';
+            popupExt.classList.remove('dragging');
+            savePopupStateExt();
         }
+    }
 
-        function moveDragExt(e) {
-            if (isDraggingExt) {
-                const deltaX = (e.clientX || e.touches[0].clientX) - startX;
-                const deltaY = (e.clientY || e.touches[0].clientY) - startY;
-                popupExt.style.left = `${initialLeft + deltaX}px`;
-                popupExt.style.top = `${initialTop + deltaY}px`;
-            }
+    // Изменение размера окна
+    let startWidth, startHeight, startResizeExtX, startResizeExtY;
+
+    function startResizeExt(e) {
+        isResizingExt = true;
+        iframeExt.style.pointerEvents = 'none';
+        popupExt.classList.add('resizing');
+        
+        startWidth = parseInt(document.defaultView.getComputedStyle(popupExt).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(popupExt).height, 10);
+        startResizeExtX = e.clientX || e.touches[0].clientX;
+        startResizeExtY = e.clientY || e.touches[0].clientY;
+        
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function doResizeExt(e) {
+        if (!isResizingExt) return;
+        
+        const currentX = e.clientX || e.touches[0].clientX;
+        const currentY = e.clientY || e.touches[0].clientY;
+        
+        const newWidth = startWidth + (currentX - startResizeExtX);
+        const newHeight = startHeight + (currentY - startResizeExtY);
+        
+        const minWidth = 200;
+        const minHeight = 150;
+        const maxWidth = window.innerWidth * 0.9;
+        const maxHeight = window.innerHeight * 0.9;
+        
+        popupExt.style.width = Math.max(minWidth, Math.min(newWidth, maxWidth)) + 'px';
+        popupExt.style.height = Math.max(minHeight, Math.min(newHeight, maxHeight)) + 'px';
+        
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function stopResizeExt() {
+        if (isResizingExt) {
+            isResizingExt = false;
+            iframeExt.style.pointerEvents = 'auto';
+            popupExt.classList.remove('resizing');
+           savePopupStateExt();
         }
+    }
 
-        function stopDragExt() {
-            if (isDraggingExt) {
-                isDraggingExt = false;
-                savePopupStateExt();
-            }
-        }
+    // Обработчики событий
+    headerExt.addEventListener('mousedown', startDragExt);
+    document.addEventListener('mousemove', moveDragExt);
+    document.addEventListener('mouseup', stopDragExt);
+    headerExt.addEventListener('touchstart', startDragExt);
+    document.addEventListener('touchmove', moveDragExt);
+    document.addEventListener('touchend', stopDragExt);
 
-        // Event listeners for dragging
-        headerExt.addEventListener('mousedown', startDragExt);
-        document.addEventListener('mousemove', moveDragExt);
-        document.addEventListener('mouseup', stopDragExt);
-        headerExt.addEventListener('touchstart', startDragExt);
-        document.addEventListener('touchmove', moveDragExt);
-        document.addEventListener('touchend', stopDragExt);
+    resizeHandleExt.addEventListener('mousedown', startResizeExt);
+    resizeHandleExt.addEventListener('touchstart', startResizeExt);
+    document.addEventListener('mousemove', doResizeExt);
+    document.addEventListener('touchmove', doResizeExt);
+    document.addEventListener('mouseup', stopResizeExt);
+    document.addEventListener('touchend', stopResizeExt);
+
+    // Отмена действий при выходе курсора за пределы окна
+    document.addEventListener('mouseleave', () => {
+        if (isDraggingExt) stopDragExt();
+        if (isResizingExt) stopResizeExt();
+    });
 
         // Function to close the popupExt
-        function closePopupExt(event) {
-            event.stopPropagation();
-            popupExt.style.display = 'none';
-            overlayExt.style.display = 'none';
-            iframeExt.src = '';
-        }
-
+function closePopupExt(event) {
+    event.stopPropagation();
+    savePopupStateExt(); // Сохраняем позицию!
+    popupExt.style.display = 'none';
+    overlayExt.style.display = 'none';
+    iframeExt.src = '';
+}
         closeBtnExt.addEventListener('click', closePopupExt);
         overlayExt.addEventListener('click', closePopupExt);
 
@@ -370,56 +490,7 @@ dictBtnExt.appendChild(dictIconExt);
                 popupExt.style.height = height;
             }
         }
-
-        // Resize functionality
-        let isResizingExt = false;
-        let startWidth, startHeight, startResizeExtX, startResizeExtY;
-
-        resizeHandleExt.addEventListener('mousedown', startResizeExt);
-        resizeHandleExt.addEventListener('touchstart', startResizeExt);
-
-        function startResizeExt(e) {
-            isResizingExt = true;
-            startWidth = parseInt(document.defaultView.getComputedStyle(popupExt).width, 10);
-            startHeight = parseInt(document.defaultView.getComputedStyle(popupExt).height, 10);
-            startResizeExtX = e.clientX || e.touches[0].clientX;
-            startResizeExtY = e.clientY || e.touches[0].clientY;
-            
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function doResizeExt(e) {
-            if (!isResizingExt) return;
-            
-            const currentX = e.clientX || e.touches[0].clientX;
-            const currentY = e.clientY || e.touches[0].clientY;
-            
-            const newWidth = startWidth + (currentX - startResizeExtX);
-            const newHeight = startHeight + (currentY - startResizeExtY);
-            
-            const minWidth = 200;
-            const minHeight = 150;
-            const maxWidth = window.innerWidth * 0.9;
-            const maxHeight = window.innerHeight * 0.9;
-            
-            popupExt.style.width = Math.max(minWidth, Math.min(newWidth, maxWidth)) + 'px';
-            popupExt.style.height = Math.max(minHeight, Math.min(newHeight, maxHeight)) + 'px';
-            
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function stopResizeExt() {
-            isResizingExt = false;
-            savePopupStateExt();
-        }
-
-        document.addEventListener('mousemove', doResizeExt);
-        document.addEventListener('touchmove', doResizeExt);
-        document.addEventListener('mouseup', stopResizeExt);
-        document.addEventListener('touchend', stopResizeExt);
-        
+    
         loadSizeExt();
 
         // 6. Return values from createPopupExt for use in the main IIFE scope
@@ -428,6 +499,30 @@ dictBtnExt.appendChild(dictIconExt);
 
     // 7. Call createPopupExt after customDictUrl is potentially loaded
     const { overlayExt, popupExt, iframeExt, openBtnExt, dictBtnExt } = createPopupExt();
+
+    setupPopupPositionControlExt();
+
+
+// 1. Вызываем при открытии попапа (внутри showTranslation)
+async function showTranslation(word) {
+    const processedWord = processWordExt(word);
+    const url = `${customDictUrl}${encodeURIComponent(processedWord)}`;
+    iframeExt.src = url;
+    popupExt.style.display = 'block';
+    overlayExt.style.display = 'block';
+    openBtnExt.href = `${dhammaGiftURL}${encodeURIComponent(processedWord)}${dgParams}`;
+
+
+    try {
+        const result = await browserApi.storage.sync.get(dictUrlKey);
+        const dictUrl = result[dictUrlKey] || DEFAULT_DICT_URL;
+        dictBtnExt.href = `${dictUrl}${encodeURIComponent(processedWord)}`;
+    } catch (error) {
+        console.error("Error updating dictBtnExt href:", error);
+        dictBtnExt.href = `${DEFAULT_DICT_URL}${encodeURIComponent(processedWord)}`;
+    }
+}
+
 
     // Function to process and clean up the word
     function processWordExt(word) {
@@ -440,21 +535,89 @@ dictBtnExt.appendChild(dictIconExt);
     }
 
     // Function to get the word under the cursor
-    function getWordUnderCursorExt(event) {
-        const range = document.caretRangeFromPoint(event.clientX, event.clientY);
-        if (!range) return null;
-        const text = range.startContainer.textContent;
-        const offset = range.startOffset;
-        if (!text) return null;
-        const regex = /[^\s,"";.–:—!?()]+/g; // Regex to match words
-        let match;
-        while ((match = regex.exec(text)) !== null) {
-            if (match.index <= offset && regex.lastIndex >= offset) {
-                return match[0];
+function getWordUnderCursorExt(event) {
+    // Проверяем, поддерживается ли caretRangeFromPoint (Chrome, Edge)
+    if (typeof document.caretRangeFromPoint === 'function') {
+        try {
+            const range = document.caretRangeFromPoint(event.clientX, event.clientY);
+            if (range) {
+                const text = range.startContainer.textContent;
+                const offset = range.startOffset;
+                if (text) {
+                    const regex = /[^\s,"";.–:—!?()]+/g;
+                    let match;
+                    while ((match = regex.exec(text)) !== null) {
+                        if (match.index <= offset && regex.lastIndex >= offset) {
+                            return match[0];
+                        }
+                    }
+                }
             }
+        } catch (e) {
+            console.error("caretRangeFromPoint failed:", e);
         }
-        return null;
     }
+
+    // Fallback для Firefox и других браузеров
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    if (!element) return null;
+
+    // Получаем текст элемента
+    const text = element.textContent || element.innerText;
+    if (!text) return null;
+
+    // Создаем временный Range для определения позиции
+    const range = document.createRange();
+    const textNode = findTextNode(element);
+    if (!textNode) return null;
+
+    range.selectNodeContents(textNode);
+
+    // Получаем позицию клика относительно текста
+    const rect = element.getBoundingClientRect();
+    const relativeX = event.clientX - rect.left;
+    const relativeY = event.clientY - rect.top;
+
+    // Находим символ под курсором (приблизительно)
+    let charPos = 0;
+    for (let i = 0; i < text.length; i++) {
+        range.setStart(textNode, i);
+        range.setEnd(textNode, i + 1);
+        const charRect = range.getBoundingClientRect();
+        if (
+            relativeX >= charRect.left - rect.left &&
+            relativeX <= charRect.right - rect.left &&
+            relativeY >= charRect.top - rect.top &&
+            relativeY <= charRect.bottom - rect.top
+        ) {
+            charPos = i;
+            break;
+        }
+    }
+
+    // Находим слово вокруг этого символа
+    const regex = /[^\s,"";.–:—!?()]+/g;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        if (match.index <= charPos && regex.lastIndex >= charPos) {
+            return match[0];
+        }
+    }
+
+    return null;
+}
+
+// Вспомогательная функция для поиска текстового узла
+function findTextNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node;
+    for (const child of node.childNodes) {
+        const textNode = findTextNode(child);
+        if (textNode) return textNode;
+    }
+    return null;
+}
+
+
 
     // Function to show translation for a given word
     async function showTranslation(word) { // Make this function async
