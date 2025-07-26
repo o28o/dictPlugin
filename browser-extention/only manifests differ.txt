@@ -1,1 +1,6 @@
 just update the version number in both manifests and you're good to go
+
+
+4.4 version
+Fixed new window for Firefox
+New Window default mode

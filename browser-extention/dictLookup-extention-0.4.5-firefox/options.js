@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем эту строку для кросс-браузерности
+    const browserApi = typeof browser !== 'undefined' ? browser : chrome;
+
     const urlPreset = document.getElementById('urlPreset');
     const customUrlContainer = document.getElementById('customUrlContainer');
     const customUrl = document.getElementById('customUrl');
@@ -18,66 +21,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Сохранение настроек
     saveButton.addEventListener('click', function() {
-        let selectedUrl;
+        let selectedValue;
         
         if (urlPreset.value === 'custom') {
-            selectedUrl = customUrl.value.trim();
-            if (!selectedUrl) {
+            selectedValue = customUrl.value.trim();
+            if (!selectedValue) {
                 showStatus('Please enter a custom URL', 'error');
                 return;
             }
             
-            // Basic URL validation
-            if (!selectedUrl.includes('?q=') && !selectedUrl.includes('?search=')) {
-                showStatus('Error: URL must contain "?q=" or "?search=" parameter', 'error');
+            if (!selectedValue.includes('?q=') && !selectedValue.includes('?search=')) {
+                showStatus('Error: Custom URL for popup must contain "?q=" or "?search=" parameter', 'error');
                 return;
             }
         } else {
-            selectedUrl = urlPreset.value;
+            selectedValue = urlPreset.value;
         }
         
-        // Сохраняем в chrome.storage
-        chrome.storage.sync.set({ dictUrl: selectedUrl }, function() {
-            showStatus('Settings saved!', 'success');
+        // Используем browserApi вместо chrome
+        browserApi.storage.sync.set({ dictUrl: selectedValue }, function() {
+            if (browserApi.runtime.lastError) {
+                showStatus(`Error: ${browserApi.runtime.lastError.message}`, 'error');
+            } else {
+                showStatus('Saved! Refresh the reading page if needed', 'success');
+            }
         });
     });
 
     // Сброс настроек
     resetButton.addEventListener('click', function() {
-        // Удаляем URL из sync storage
-        chrome.storage.sync.remove('dictUrl', function() {
-            // Устанавливаем флаг для сброса попапа в content script
-            chrome.storage.local.set({ 'popup_reset_flag': true });
-
-            // Отправляем сообщение в background.js для сброса состояния
-            chrome.runtime.sendMessage({ action: 'reset_extension_state' });
+        // Используем browserApi вместо chrome
+        browserApi.storage.sync.remove('dictUrl', function() {
+            browserApi.storage.local.set({ 'popup_reset_flag': true });
+            browserApi.runtime.sendMessage({ action: 'reset_extension_state' });
             
-            // Сбрасываем UI
             urlPreset.selectedIndex = 0;
             customUrlContainer.style.display = 'none';
             customUrl.value = '';
             
-            showStatus('Settings reset. Please reload the page you were reading.', 'success');
+            showStatus('Settings reset. Please reload any pages where the extension is active.', 'success');
         });
     });
     
     // Загрузка сохраненных настроек
-    chrome.storage.sync.get(['dictUrl'], function(result) {
+    // Используем browserApi вместо chrome
+    browserApi.storage.sync.get(['dictUrl'], function(result) {
         if (result.dictUrl) {
-            // Проверяем, есть ли этот URL в предустановленных
-            const options = urlPreset.options;
-            let found = false;
+            const options = Array.from(urlPreset.options);
+            const foundOption = options.find(option => option.value === result.dictUrl);
             
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === result.dictUrl) {
-                    urlPreset.selectedIndex = i;
-                    found = true;
-                    break;
-                }
-            }
-            
-            if (!found) {
-                urlPreset.selectedIndex = options.length - 1; // Выбираем "Custom URL..."
+            if (foundOption) {
+                urlPreset.value = result.dictUrl;
+            } else {
+                urlPreset.value = 'custom';
                 customUrlContainer.style.display = 'block';
                 customUrl.value = result.dictUrl;
             }
