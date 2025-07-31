@@ -238,47 +238,69 @@ if (window.self === window.top) {
     const processWordExt = (word) => word.replace(/^[\s'‘—.–…"“”]+/, '').replace(/[\s'‘,—.—–"“…:;”]+$/, '').replace(/[‘'’‘"“””]+/g, "'").trim().toLowerCase();
     
     // Full getWordUnderCursorExt function restored
-    function getWordUnderCursorExt(event) {
-        if (typeof document.caretRangeFromPoint === 'function') {
-            try {
-                const range = document.caretRangeFromPoint(event.clientX, event.clientY);
-                if (range) {
-                    const text = range.startContainer.textContent;
-                    const offset = range.startOffset;
-                    if (text) {
-                        const regex = /[^\s,"";.–:—!?()]+/g;
-                        let match;
-                        while ((match = regex.exec(text)) !== null) {
-                            if (match.index <= offset && regex.lastIndex >= offset) return match[0];
-                        }
-                    }
-                }
-            } catch (e) { console.error("caretRangeFromPoint failed:", e); }
+ function getWordUnderCursorExt(event) {
+    const x = event.clientX;
+    const y = event.clientY;
+    let range;
+
+    // Используем стандартные методы для определения позиции курсора
+    if (document.caretRangeFromPoint) {
+        range = document.caretRangeFromPoint(x, y);
+    } else if (document.caretPositionFromPoint) { // Для Firefox
+        const pos = document.caretPositionFromPoint(x, y);
+        if (!pos || !pos.offsetNode) {
+            return null;
         }
-        const range = document.createRange();
-        const element = document.elementFromPoint(event.clientX, event.clientY);
-        if (!element) return null;
-        for (const child of element.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                range.selectNodeContents(child);
-                const rect = range.getBoundingClientRect();
-                if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
-                    const text = child.textContent;
-                    const regex = /[^\s,"";.–:—!?()]+/g;
-                    let match;
-                    while ((match = regex.exec(text)) !== null) {
-                       range.setStart(child, match.index);
-                       range.setEnd(child, match.index + match[0].length);
-                       const wordRect = range.getBoundingClientRect();
-                       if (event.clientX >= wordRect.left && event.clientX <= wordRect.right && event.clientY >= wordRect.top && event.clientY <= wordRect.bottom) {
-                           return match[0];
-                       }
-                    }
-                }
-            }
-        }
+        range = document.createRange();
+        range.setStart(pos.offsetNode, pos.offset);
+    } else {
+        return null; // Нет доступных методов
+    }
+
+    if (!range || !range.startContainer) {
         return null;
     }
+
+    // Цель клика должна быть текстовым узлом
+    if (range.startContainer.nodeType !== Node.TEXT_NODE) {
+        return null;
+    }
+
+    // --- КЛЮЧЕВАЯ ГЕОМЕТРИЧЕСКАЯ ПРОВЕРКА ---
+    // Создаем диапазон для всего текстового узла, чтобы получить его границы
+    const nodeRange = document.createRange();
+    nodeRange.selectNode(range.startContainer);
+    const nodeRect = nodeRange.getBoundingClientRect();
+
+    // Если клик был за пределами прямоугольника текста, выходим
+    if (x < nodeRect.left || x > nodeRect.right || y < nodeRect.top || y > nodeRect.bottom) {
+        return null;
+    }
+
+    // Если проверка пройдена, находим слово
+    const text = range.startContainer.textContent;
+    const offset = range.startOffset;
+
+    // Ищем начало слова, двигаясь назад от курсора
+    let start = offset;
+    while (start > 0 && text[start - 1] && !/\s|[.,;"'!?()“–—]/.test(text[start - 1])) {
+        start--;
+    }
+
+    // Ищем конец слова, двигаясь вперед
+    let end = offset;
+    while (end < text.length && text[end] && !/\s|[.,;"'!?()“–—]/.test(text[end])) {
+        end++;
+    }
+
+    const word = text.substring(start, end);
+
+    if (word && word.trim().length > 0) {
+        return word;
+    }
+
+    return null;
+}
 
     // Helper function to trigger custom protocols without opening a blank tab in Firefox
     function triggerCustomProtocol(url) {
