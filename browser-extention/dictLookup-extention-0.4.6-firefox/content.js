@@ -56,11 +56,11 @@ if (window.self === window.top) {
     const storageKey = 'dictPopupSize';
     const dictUrlKey = 'dictUrl';
     
-    // Default URLs and modes
-    const DEFAULT_POPUP_URL = 'https://dict.dhamma.gift/search_html?q=';
-    const NEW_WINDOW_URL_EN = 'https://dict.dhamma.gift/search_html?q=';
-    const NEW_WINDOW_URL_RU = 'https://dict.dhamma.gift/ru/search_html?q=';
-    let currentModeOrUrl = DEFAULT_POPUP_URL;
+// Default URLs and modes
+const DEFAULT_POPUP_URL = 'https://dict.dhamma.gift/search_html?q='; // Оставим эту константу для кнопки
+const NEW_WINDOW_URL_EN = 'https://dict.dhamma.gift/search_html?q=';
+const NEW_WINDOW_URL_RU = 'https://dict.dhamma.gift/ru/search_html?q=';
+let currentModeOrUrl = 'newWindowExt'; // А здесь установим 'newWindowExt' как режим по умолчанию
 
     // Reset popup settings logic
     try {
@@ -347,8 +347,7 @@ if (window.self === window.top) {
     }
 
     const handleClickExt = (event) => {
-        if (!isEnabled || event.target.closest('a, button, input, textarea, select, .popupExt')) return;
-        const selectedText = getSelectedText();
+        if (!isEnabled || event.target.closest('a, button, input, textarea, select, .popupExt, video, .html5-video-player')) return;        const selectedText = getSelectedText();
         if (selectedText) { showTranslation(selectedText); return; }
         const clickedWord = getWordUnderCursorExt(event);
         if (clickedWord) { showTranslation(clickedWord); }
