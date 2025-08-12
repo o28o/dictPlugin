@@ -10,7 +10,7 @@
 
 Find out more about the key features [here](https://dhamma.gift/assets/common/keyFeatures.html){target="_blank"}.
 
-**Dhamma.gift** provides a wide variety of DPD lookup options — including multiple built-in DPD modes and even the ability to look up words in **DictTango (Android)** and **Mdict (iOS)** directly from the site.
+**Dhamma.gift** provides a wide variety of DPD lookup options — including multiple built-in DPD modes and even the ability to look up words in **DictTango (Android)**, **Mdict (iOS)** and **GoldenDict-NG (Desktop)** directly from the site.
 
 Beyond that, Dhamma.gift also supports:
 
