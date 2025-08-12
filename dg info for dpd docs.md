@@ -53,7 +53,8 @@ In the English version of the site, only the English DPD is available. In the Ru
 
 - **Search Only:** This option allows you to initiate a search for the clicked word on Dhamma.gift.
 - **DictTango Android:** Directly opens the DictTango Android app, enabling instant lookup in any installed dictionaries, including DPD, without copying and pasting or using the context menu.
-- **Mdict IOS:** Same as above, but for Mdict iOS. 
+- **Mdict IOS:** Same as above, but for Mdict iOS.
+- **GoldenDict-NG** Same as above, but for GoldenDict-NG Desktop.
 
 ## Navigation Buttons in the Popup Window (where applicable):
 
