@@ -10,93 +10,109 @@
         h3 { margin-top: 20px; }
         ul { padding-left: 20px; }
         .product-list { background: #f9f9f9; padding: 15px; border-radius: 5px; }
+        .sync-section { border: 1px solid #3498db; padding: 15px; border-radius: 5px; margin-top: 20px; background-color: #f0f7fd; }
     </style>
 </head>
 <body>
     <div class="container">
-<div style="text-align: right;">
-   <a href="./privacy.html">en</a> ru
-</div>
-    <h1>Политика конфиденциальности</h1>
-    
-    <h2>Охватываемые продукты</h2>
-    <div class="product-list">
-        <h3>Сервисы Telegram</h3>
+        <div style="text-align: right;">
+           <a href="./privacy.html">en</a> ru
+        </div>
+        <h1>Политика конфиденциальности</h1>
+        
+        <p>Мы придерживаемся принципа <strong>максимальной анонимности</strong>. Проект спроектирован так, чтобы использование функций поиска и чтения не требовало раскрытия личности пользователя.</p>
+
+        <h2>Охватываемые продукты</h2>
+        <div class="product-list">
+            <h3>Сервисы Telegram</h3>
+            <ul>
+                <li><strong>Telegram-боты:</strong>
+                    <ul>
+                        <li><a href="https://t.me/dhammagift_bot" target="_blank">@Dhammagift_bot</a> — основной бот для поиска по суттам и пали-словарю.</li>
+                        <li><a href="https://t.me/dgift_bot" target="_blank">@Dgift_bot</a> — короткое имя бота.</li>
+                    </ul>
+                </li>
+                <li><strong>Мини-приложения Telegram:</strong>
+                    <ul>
+                        <li><a href="http://t.me/dhammagift_bot/find" target="_blank">Мини-приложение поиска</a> — для поиска сутт внутри Telegram.</li>
+                        <li><a href="http://t.me/dhammagift_bot/read" target="_blank">Мини-приложение чтения</a> — для чтения пали-текстов.</li>
+                        <li><a href="http://t.me/dhammagift_bot/dict" target="_blank">Мини-приложение словаря</a> — для поиска в словаре.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>PWA- и TWA-приложения</h3>
+            <ul>
+                <li><strong><a href="https://dhamma.gift" target="_blank">Dhamma.Gift PWA</a></strong> — устанавливаемое прогрессивное веб-приложение (PWA).</li>
+                <li><strong>Dhamma.Gift Android TWA-приложение:</strong> доступно в <a href="https://play.google.com/store/apps/details?id=gift.dhamma.webapp" target="_blank">Google Play</a>.</li>
+                <li><strong><a href="https://dict.dhamma.gift" target="_blank">Dict.Dhamma.Gift PWA</a></strong> — устанавливаемое прогрессивное веб-приложение (PWA).</li>
+                <li><strong>Dict.Dhamma.Gift Android TWA-приложение:</strong> доступно в <a href="https://play.google.com/store/apps/details?id=gift.dhamma.twa" target="_blank">Google Play</a>.</li>
+            </ul>
+
+            <h3>Браузерные расширения</h3>
+            <ul>
+                <li><a href="https://chromewebstore.google.com/detail/dhammagift-search-and-wor/dnnogjdcmhbiobpnkhdbfnfjnjlikabd" target="_blank">Расширение для Chrome</a>.</li>
+                <li><a href="https://addons.mozilla.org/en-US/firefox/addon/dhamma-gift/" target="_blank">Расширение для Firefox</a>.</li>
+                <li><a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj" target="_blank">Расширение для Microsoft Edge</a>.</li>
+            </ul>
+        </div>
+
+        <div class="sync-section">
+            <h2>Облачная синхронизация (опционально)</h2>
+            <p>Эта функция включается на сайте и/или в PWA/TWA-приложении Dhamma.gift <strong>только по желанию пользователя</strong> для сохранения настроек, избранного и истории между устройствами.</p>
+            <ul>
+                <li><strong>Инфраструктура:</strong> Данные хранятся во внешней облачной базе данных <strong>Google Firebase</strong> (облачная БД или БД).</li>
+                <li><strong>Методы входа:</strong>
+                    <ul>
+                        <li><strong>Анонимный вход:</strong> При использовании секретной фразы она хэшируется на вашем устройстве (SHA-256) перед отправкой. В БД хранится только анонимный идентификатор, исходная фраза не сохраняется.</li>
+                        <li><strong>Google-аккаунт:</strong> Используется только ваш email для идентификации сессии. В БД хранится хэшированная запись, скрывающая ваш email.</li>
+                    </ul>
+                </li>
+                <li><strong>Хранение данных:</strong> В БД сохраняются только ваши закладки (Favorites), история поиска и настройки интерфейса. Эти данные доступны исключительно вам после авторизации.</li>
+                <li><strong>Удаление:</strong> Пользователь может в любой момент полностью удалить все свои данные из облачной БД через кнопку «Delete Cloud Data» в меню синхронизации.</li>
+            </ul>
+        </div>
+
+        <h2>Обрабатываемые данные</h2>
+        <p>Продукты обрабатывают минимальные технические данные:</p>
         <ul>
-            <li><strong>Телеграм боты:</strong>
-                <ul>
-                    <li><a href="https://t.me/dhammagift_bot" target="_blank">@Dhammagift_bot</a> - Основной бот для поиска по суттам и пали-словарю</li>
-                    <li><a href="https://t.me/dgift_bot" target="_blank">@Dgift_bot</a> - Короткое имя бота</li>
-                </ul>
-            </li>
-            <li><strong>Мини-приложения Telegram:</strong>
-                <ul>
-                    <li><a href="http://t.me/dhammagift_bot/find" target="_blank">Мини-приложение поиска</a> - Для поиска сутт внутри Telegram</li>
-                    <li><a href="http://t.me/dhammagift_bot/read" target="_blank">Мини-приложение чтения</a> - Для чтения пали-текстов</li>
-                    <li><a href="http://t.me/dhammagift_bot/dict" target="_blank">Мини-приложение словаря</a> - Для поиска в словаре</li>
-                </ul>
-            </li>
+            <li><strong>Для поиска:</strong> Передаются только поисковые запросы, ссылки на тексты или выбранные слова для словаря.</li>
+            <li><strong>Для синхронизации:</strong> При использовании функции синхронизации обрабатываются метаданные об активных сессиях (тип ОС и браузера) для управления вашими устройствами.</li>
+            <li><strong>Технические данные:</strong> Базовая метаинформация запросов (IP-адрес, User-Agent), собираемая веб-серверами для защиты от атак.</li>
         </ul>
 
-
-                <h3>PWA и TWA приложения</h3>
+        <h2>Что мы НЕ собираем</h2>
         <ul>
-            <li><strong><a href="https://dhamma.gift" target="_blank">Dhamma.Gift PWA</a></strong> – Устанавливаемое прогрессивное веб-приложение (PWA) c Меню Быстрого Поступа и функцией "Поделиться"</li>
-            <li><strong>Dhamma.Gift Android TWA-приложение:</strong> Доступно в <a href="https://play.google.com/store/apps/details?id=gift.dhamma.webapp" target="_blank">Google Play</a> </li>
-            <li><strong><a href="https://dhamma.gift" target="_blank">Dict.Dhamma.Gift PWA</a></strong> – Устанавливаемое прогрессивное веб-приложение (PWA) c Меню Быстрого Поступа и функцией "Поделиться"</li>
-            <li><strong>Dict.Dhamma.Gift Android TWA-приложение:</strong> Доступно в  <a href="https://play.google.com/store/apps/details?id=gift.dhamma.twa" target="_blank">Google Play</a></li>
-
-        </ul>     
-
-
-        <h3>Браузерные расширения</h3>
-        <ul>
-            <li><a href="https://chromewebstore.google.com/detail/dhammagift-search-and-wor/dnnogjdcmhbiobpnkhdbfnfjnjlikabd" target="_blank">Расширение для Chrome</a></li>
-             <li><a href="https://addons.mozilla.org/en-US/firefox/addon/dhamma-gift/" target="_blank">Расширение для Firefox</a></li>
-            <li><a href="https://microsoftedge.microsoft.com/addons/detail/dhammagift-search-and-wo/aokegkhdaijkikbdocanadeghllhfmhj" target="_blank">Расширение для Microsoft Edge</a></li>
+            <li>Личную информацию пользователей (за исключением email при входе через Google).</li>
+            <li>ID пользователей Telegram или истории чатов.</li>
+            <li>Историю посещений вне наших сервисов.</li>
+            <li>Постоянные идентификаторы для отслеживания (вне рамок выбранной пользователем сессии синхронизации).</li>
         </ul>
-    </div>
 
-    <h2>Обрабатываемые данные</h2>
-    <p>Эти продукты обрабатывают только минимальные технические данные, необходимые для их работы:</p>
-    <ul>
-        <li><strong>Для поиска в словаре:</strong> Передаётся только выбранное/кликнутое слово</li>
-        <li><strong>Для поиска сутт:</strong> Передаются только поисковые запросы и ссылки на тексты</li>
-        <li><strong>Технические данные:</strong> Базовая метаинформация запросов (IP-адрес, user agent), которую собирают все веб-серверы</li>
-    </ul>
+        <h2>Передача данных</h2>
+        <p>Все данные передаются только на наши сервисы или доверенную инфраструктуру:</p>
+        <ul>
+            <li><a href="https://dhamma.gift/">dhamma.gift</a> / <a href="https://dict.dhamma.gift/">dict.dhamma.gift</a> — для поиска и чтения.</li>
+            <li><a href="https://dpdict.net/">dpdict.net</a> — для результатов пали-словаря.</li>
+            <li><strong>Google Firebase</strong> — исключительно для обеспечения работы функции облачной синхронизации.</li>
+        </ul>
+        <p>Данные пользователей не передаются третьим сторонам для маркетинговых или иных целей.</p>
 
-    <h2>Что мы НЕ собираем</h2>
-    <ul>
-        <li>Никакой личной информации пользователей</li>
-        <li>ID пользователей Telegram или истории чатов</li>
-        <li>Историю посещений вне наших сервисов</li>
-        <li>Постоянные идентификаторы для отслеживания</li>
-    </ul>
+        <h2>Хранение данных</h2>
+        <ul>
+            <li><strong>Без синхронизации:</strong> Мы не храним поисковые запросы, слова или историю на серверах. Все данные хранятся только локально в localStorage вашего браузера.</li>
+            <li><strong>При синхронизации:</strong> Данные (избранное, настройки, история) хранятся в облачной БД Google до тех пор, пока пользователь не решит их удалить.</li>
+            <li><strong>Логи:</strong> Технические логи серверов хранятся максимум 30 дней.</li>
+        </ul>
 
-    <h2>Передача данных</h2>
-    <p>Все данные передаются только на наши сервисы:</p>
-    <ul>
-        <li><a href="https://dhamma.gift/">dhamma.gift</a> - Для поиска текстов и чтения</li>
-        <li><a href="https://dict.dhamma.gift/">dict.dhamma.gift</a> - Для поиска в словаре</li>
-        <li><a href="https://dpdict.net/">dpdict.net</a> - Для полных результатов пали-словаря</li>
-    </ul>
-    <p>Данные пользователей не передаются третьим сторонам.</p>
-
-    <h2>Хранение данных</h2>
-    <p>Мы не храним:</p>
-    <ul>
-        <li>Поисковые запросы или слова после обработки</li>
-        <li>Данные об индивидуальных паттернах использования</li>
-        <li>Историю взаимодействий с Telegram ботами</li>
-    </ul>
-    <p>Логи серверов хранятся максимум 30 дней только для технических нужд.</p>
-<h2>Обновления политики конфиденциальности</h2>
+        <h2>Обновления политики конфиденциальности</h2>
         <p>
-            Настоящая Политика конфиденциальности может периодически обновляться. Актуальная версия будет регулировать использование собираемой информации. Дальнейший доступ к Сервисам или их использование после вступления изменений в силу будет означать согласие с обновлённой Политикой конфиденциальности.
+            Настоящая Политика конфиденциальности может периодически обновляться. Дальнейшее использование сервисов после вступления изменений в силу будет означать согласие с обновлённой политикой.
         </p>  
         
-    <p>По всем вопросам обращайтесь на <a href="mailto:agiftofdhamma@gmail.com">agiftofdhamma@gmail.com</a>.</p>
-    
-    <p><small>Последнее обновление: Июль 2025</small></p>
+        <p>По всем вопросам обращайтесь на <a href="mailto:agiftofdhamma@gmail.com">agiftofdhamma@gmail.com</a>.</p>
+        
+        <p><small>Последнее обновление: Апрель 2026</small></p>
+    </div>
 </body>
 </html>
