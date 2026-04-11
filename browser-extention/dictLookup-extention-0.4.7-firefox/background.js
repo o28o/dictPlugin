@@ -84,14 +84,20 @@ browserAPI.commands.onCommand.addListener((command) => {
 
 // Функция обновления состояния расширения
 function updateExtensionState(tab) {
-  if (tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('edge://')) {
+  if (tab && tab.id && tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('edge://') && !tab.url.startsWith('about:')) {
     updateIcon();
 
+    // Отправляем сигнал для показа бабла
+    browserAPI.tabs.sendMessage(tab.id, { 
+        action: "show_extension_status", 
+        enabled: isEnabled 
+    }).catch(() => {
+        // Игнорируем ошибки, если скрипт еще не внедрен
+    });
+
     if (isEnabled) {
-      // Запускаем content.js
       executeScript(tab.id, { files: ['content.js'] });
     } else {
-      // Выключаем попап на странице
       executeScript(tab.id, { func: disablePopup });
     }
   }
@@ -121,10 +127,10 @@ function executeScript(tabId, scriptDetails) {
   }
 }
 
-// Функция отключения попапа (выполняется в контексте страницы)
+// Функция отключения попапа (исправлены селекторы под расширение)
 function disablePopup() {
-  const popup = document.querySelector('.popup');
-  const overlay = document.querySelector('.overlay');
+  const popup = document.querySelector('.popupExt');
+  const overlay = document.querySelector('.overlayExt');
   if (popup && overlay) {
     popup.style.display = 'none';
     overlay.style.display = 'none';

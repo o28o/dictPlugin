@@ -1,7 +1,7 @@
 // content.js
 (function() {
     'use strict';
-    const scrollbarStyles = `
+const scrollbarStyles = `
         ::-webkit-scrollbar {
             width: 12px;
             background: #E1EBED;
@@ -35,7 +35,31 @@
     .popupExt.resizing iframe {
         pointer-events: none;
     }
-        
+
+    .bubble-ext-notification {
+        position: fixed;
+        bottom: 8%;
+        left: 50%;
+        box-shadow: 0 0 5px black;
+        background: #136857;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 24px;
+        font-size: 14px;
+        opacity: 0;
+        transform: translate(-50%, 20px);
+        transition: all 0.3s ease;
+        z-index: 2147483647;
+        pointer-events: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .bubble-ext-notification.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
     `;
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
@@ -131,12 +155,12 @@ let currentModeOrUrl = 'newWindowExt'; // А здесь установим 'newW
         closeBtnExt.textContent = '×';
         closeBtnExt.title = 'Close';
         
-        Object.assign(openBtnExt.style, { position: 'absolute', top: '10px', right: '50px', border: 'none', background: '#244B26', color: 'white', cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' });
+        Object.assign(openBtnExt.style, { position: 'absolute', top: '10px', right: '90px', border: 'none', background: '#244B26', color: 'white', cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' });
         openBtnExt.target = '_blank';
         openBtnExt.title = 'Search with Dhamma.Gift';
         openBtnExt.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="white" style="transform: scaleX(-1);"><path d="M505 442.7l-99.7-99.7c28.4-35.3 45.7-79.8 45.7-128C451 98.8 352.2 0 224 0S-3 98.8-3 224s98.8 224 224 224c48.2 0 92.7-17.3 128-45.7l99.7 99.7c6.2 6.2 14.4 9.4 22.6 9.4s16.4-3.1 22.6-9.4c12.5-12.5 12.5-32.8 0-45.3zM224 384c-88.4 0-160-71.6-160-160S135.6 64 224 64s160 71.6 160 160-71.6 160-160 160z"/></svg>`;
 
-        Object.assign(dictBtnExt.style, { position: 'absolute', top: '10px', right: '90px', border: 'none', background: '#2D3E50', color: 'white', cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' });
+        Object.assign(dictBtnExt.style, { position: 'absolute', top: '10px', right: '50px', border: 'none', background: '#2D3E50', color: 'white', cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' });
         dictBtnExt.target = '_blank';
         dictBtnExt.title = 'Open in DPD full mode';
         const dictIconExt = document.createElement('img');
@@ -313,7 +337,7 @@ let currentModeOrUrl = 'newWindowExt'; // А здесь установим 'newW
         }, 500);
     }
 
-    async function showTranslation(word) {
+async function showTranslation(word) {
         const processedWord = processWordExt(word);
         const encodedWord = encodeURIComponent(processedWord);
         let url;
@@ -327,11 +351,13 @@ let currentModeOrUrl = 'newWindowExt'; // А здесь установим 'newW
                 url = `${NEW_WINDOW_URL_RU}${encodedWord}`;
                 openDictionaryWindowExt(url);
                 break;
-            case 'goldendict://':
-                url = `${currentModeOrUrl}${encodedWord}`;
-                triggerCustomProtocol(url);
+            case 'dharmamitra':
+                url = `https://dharmamitra.org/?target_lang=english-explained&input_sentence=${encodedWord}`;
+                openDictionaryWindowExt(url);
                 break;
+            case 'goldendict://':
             case 'dttp://app.dicttango/WordLookup?word=':
+            case 'mdict://mdict.cn/search?text=':
                 url = `${currentModeOrUrl}${encodedWord}`;
                 triggerCustomProtocol(url);
                 break;
@@ -340,12 +366,58 @@ let currentModeOrUrl = 'newWindowExt'; // А здесь установим 'newW
                 iframeExt.src = url;
                 popupExt.style.display = 'block';
                 overlayExt.style.display = 'block';
-                openBtnExt.href = `${dhammaGiftURL}${encodedWord}${dgParams}`;
+                
+                // Проверка на русскую версию словаря
+                const isRussianDict = currentModeOrUrl.includes('/ru/');
+                const searchBaseUrl = isRussianDict ? 'https://f.dhamma.gift/?q=' : 'https://dhamma.gift/?q=';
+                openBtnExt.href = `${searchBaseUrl}${encodedWord}${dgParams}`;
+                
                 dictBtnExt.href = `${currentModeOrUrl.startsWith('http') ? currentModeOrUrl : DEFAULT_POPUP_URL}${encodedWord}`;
                 break;
         }
     }
+	
+	// --- UI: Status Bubble ---
+    function showStatusBubble(text) {
+        let bubble = document.getElementById('bubble-ext-status');
+        if (!bubble) {
+            bubble = document.createElement('div');
+            bubble.id = 'bubble-ext-status';
+            bubble.className = 'bubble-ext-notification';
+            document.body.appendChild(bubble);
+        }
+        bubble.textContent = text;
+        bubble.classList.remove('show');
+        void bubble.offsetWidth; // Trigger reflow
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+            bubble.classList.remove('show');
+        }, 2000);
+    }
 
+    // Listen for messages from background.js
+// Listen for messages from background.js
+    browserApi.runtime.onMessage.addListener((request) => {
+        if (request.action === "show_extension_status") {
+            // Определяем язык на основе выбранного словаря или настроек сайта
+            const isRu = currentModeOrUrl.includes('/ru/') || localStorage.getItem('siteLanguage') === 'ru';
+            
+            let statusText;
+            if (isRu) {
+                statusText = request.enabled 
+                    ? "Dhamma.Gift расширение: Вкл" 
+                    : "Dhamma.Gift расширение: Выкл";
+            } else {
+                statusText = request.enabled 
+                    ? "Dhamma.Gift extension: On" 
+                    : "Dhamma.Gift extension: Off";
+            }
+            
+            showStatusBubble(statusText);
+        }
+    });	
+	
     const handleClickExt = (event) => {
         if (!isEnabled || event.target.closest('a, button, input, textarea, select, .popupExt, video, .html5-video-player')) return;        const selectedText = getSelectedText();
         if (selectedText) { showTranslation(selectedText); return; }
